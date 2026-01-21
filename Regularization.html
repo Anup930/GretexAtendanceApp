@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regularization | Attendo Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col flex-shrink-0">
+        <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-[#0f172a]">
+            <div class="flex items-center gap-2 text-white font-bold text-lg tracking-wide">
+                <i class="ph-fill ph-squares-four text-blue-500 text-xl"></i><span>ATTENDO HUB</span>
+            </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+             <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
+            <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
+            <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-table text-lg"></i><span class="font-medium">Comp-Off</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm flex-shrink-0">
+            <h2 class="text-xl font-bold text-gray-800">Regularization Requests</h2>
+            <button onclick="loadRequests()" class="p-2 hover:bg-gray-100 rounded-lg text-gray-600"><i class="ph ph-arrows-clockwise text-lg"></i></button>
+        </header>
+
+        <div class="flex-1 overflow-hidden p-6 flex flex-col gap-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center"><div><p class="text-gray-500 text-sm font-medium">Pending Requests</p><h3 class="text-2xl font-bold text-orange-600" id="count-pending">0</h3></div><div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center"><i class="ph-fill ph-clock text-xl"></i></div></div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center"><div><p class="text-gray-500 text-sm font-medium">Approved</p><h3 class="text-2xl font-bold text-green-600" id="count-approved">0</h3></div><div class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center"><i class="ph-fill ph-check text-xl"></i></div></div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center"><div><p class="text-gray-500 text-sm font-medium">Rejected</p><h3 class="text-2xl font-bold text-red-600" id="count-rejected">0</h3></div><div class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center"><i class="ph-fill ph-x text-xl"></i></div></div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow border border-gray-200 flex flex-col flex-1 overflow-hidden">
+                
+                <div class="flex flex-col sm:flex-row justify-between items-end sm:items-center border-b border-gray-200 px-6 pt-4 gap-4">
+                    <div class="flex gap-6">
+                        <button onclick="filterTab('Pending')" id="tab-pending" class="pb-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600 transition">Pending</button>
+                        <button onclick="filterTab('All')" id="tab-all" class="pb-3 text-sm font-semibold text-gray-500 hover:text-gray-700 transition">All History</button>
+                    </div>
+                    
+                    <div class="relative w-72 mb-2">
+                        <select id="employeeFilter" onchange="renderTable()" class="w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer appearance-none font-medium text-gray-700">
+                            <option value="all">All Employees</option>
+                            </select>
+                        <i class="ph ph-user absolute left-3 top-2.5 text-gray-400"></i>
+                        <i class="ph ph-caret-down absolute right-3 top-2.5 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 border-b border-gray-200 px-4 py-3 grid grid-cols-12 gap-2 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                    <div class="col-span-2">Employee</div>
+                    <div class="col-span-3 bg-yellow-50 text-yellow-700 rounded py-1 px-2 border border-yellow-100">Proposed Change</div>
+                    <div class="col-span-2 text-center bg-blue-50 text-blue-700 rounded py-1 border border-blue-100">Zoho Ref</div>
+                    <div class="col-span-2 text-center bg-purple-50 text-purple-700 rounded py-1 border border-purple-100">TL Ref</div>
+                    <div class="col-span-1">Shift</div>
+                    <div class="col-span-2 text-right">Action</div>
+                </div>
+
+                <div id="requestList" class="flex-1 overflow-y-auto">
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400"><i class="ph ph-spinner animate-spin text-3xl mb-2"></i><span class="text-sm">Loading...</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl"><i class="ph ph-question"></i></div>
+            <h3 class="text-lg font-bold text-gray-800 mb-2">Confirm Action</h3>
+            <p class="text-sm text-gray-500 mb-6">Are you sure you want to <span id="confirmActionText" class="font-bold">approve</span> this request?</p>
+            <div class="flex gap-3 justify-center">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+                <button id="btnConfirm" class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-md">Yes, Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; // <--- PASTE YOUR URL
+        let allRequests = []; let currentFilter = 'Pending'; let selectedRequestIndex = null; let selectedAction = null;
+
+        async function loadRequests() {
+            document.getElementById('requestList').innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-400"><i class="ph ph-spinner animate-spin text-3xl mb-2"></i><span class="text-sm">Fetching...</span></div>`;
+            try {
+                const response = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getRegularizationRequests" }) });
+                const result = await response.json();
+                if (result.status === "success") { 
+                    allRequests = result.data; 
+                    updateStats(); 
+                    populateEmployeeFilter(); // <--- Populate Dropdown
+                    renderTable(); 
+                } 
+                else { document.getElementById('requestList').innerHTML = `<div class="text-center p-10 text-red-500">Error loading data</div>`; }
+            } catch (e) { console.error(e); }
+        }
+
+        // --- NEW: Populate Dropdown with Unique Employees ---
+        function populateEmployeeFilter() {
+            const select = document.getElementById('employeeFilter');
+            select.innerHTML = '<option value="all">All Employees</option>';
+            
+            // Extract unique employees using a Map
+            const uniqueEmps = new Map();
+            allRequests.forEach(req => {
+                if (!uniqueEmps.has(req.empId)) {
+                    uniqueEmps.set(req.empId, req.empName);
+                }
+            });
+
+            // Sort alphabetically
+            const sortedEmps = Array.from(uniqueEmps.entries()).sort((a, b) => a[1].localeCompare(b[1]));
+
+            sortedEmps.forEach(([id, name]) => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.innerText = name;
+                select.appendChild(opt);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('count-pending').innerText = allRequests.filter(r => r.status === 'Pending').length;
+            document.getElementById('count-approved').innerText = allRequests.filter(r => r.status === 'Approved').length;
+            document.getElementById('count-rejected').innerText = allRequests.filter(r => r.status === 'Rejected').length;
+        }
+
+        function filterTab(tab) {
+            currentFilter = tab;
+            document.getElementById('tab-pending').className = tab === 'Pending' ? "pb-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600 transition" : "pb-3 text-sm font-semibold text-gray-500 hover:text-gray-700 transition";
+            document.getElementById('tab-all').className = tab === 'All' ? "pb-3 text-sm font-semibold text-blue-600 border-b-2 border-blue-600 transition" : "pb-3 text-sm font-semibold text-gray-500 hover:text-gray-700 transition";
+            renderTable();
+        }
+
+        // --- UPDATED RENDER LOGIC ---
+        function renderTable() {
+            const list = document.getElementById('requestList'); list.innerHTML = '';
+            const selectedEmpId = document.getElementById('employeeFilter').value;
+
+            // 1. Filter by Tab
+            let filteredData = currentFilter === 'Pending' ? allRequests.filter(r => r.status === 'Pending') : allRequests;
+
+            // 2. Filter by Dropdown
+            if (selectedEmpId !== 'all') {
+                filteredData = filteredData.filter(req => req.empId.toString() === selectedEmpId);
+            }
+
+            if (filteredData.length === 0) { list.innerHTML = `<div class="text-center p-10 text-gray-400 text-sm">No requests found.</div>`; return; }
+
+            filteredData.forEach(req => {
+                let statusBadge = `<span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold">${req.status}</span>`;
+                if(req.status === 'Pending') statusBadge = `<span class="bg-orange-50 text-orange-600 px-2 py-1 rounded text-xs font-bold border border-orange-100">Pending</span>`;
+                if(req.status === 'Approved') statusBadge = `<span class="bg-green-50 text-green-600 px-2 py-1 rounded text-xs font-bold border border-green-100">Approved</span>`;
+                if(req.status === 'Rejected') statusBadge = `<span class="bg-red-50 text-red-600 px-2 py-1 rounded text-xs font-bold border border-red-100">Rejected</span>`;
+
+                const actionButtons = req.status === 'Pending' 
+                    ? `<div class="flex justify-end gap-2"><button onclick="promptAction(${req.rowIndex}, 'Approved')" class="w-8 h-8 rounded-full bg-green-50 text-green-600 hover:bg-green-600 hover:text-white flex items-center justify-center transition border border-green-200"><i class="ph-bold ph-check"></i></button><button onclick="promptAction(${req.rowIndex}, 'Rejected')" class="w-8 h-8 rounded-full bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition border border-red-200"><i class="ph-bold ph-x"></i></button></div>`
+                    : `<div class="text-right text-xs text-gray-400 italic">Action taken</div>`;
+
+                const item = document.createElement('div');
+                item.className = "px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition grid grid-cols-12 gap-2 items-center text-sm";
+                item.innerHTML = `
+                    <div class="col-span-2"><p class="font-bold text-gray-800 text-xs">${req.empName}</p><p class="text-[10px] text-gray-500">ID: ${req.empId}</p></div>
+                    
+                    <div class="col-span-3 bg-yellow-50 border border-yellow-100 rounded p-2">
+                        <div class="flex justify-between items-center mb-1"><span class="font-bold text-gray-800 text-xs">${req.date}</span><span class="text-[10px] bg-white border px-1 rounded text-gray-500">Hrs: ${req.oldHours} → <b>${req.newHours}</b></span></div>
+                        <div class="text-[11px] text-gray-600 flex justify-between"><span>In: <b>${req.newIn}</b></span><span>Out: <b>${req.newOut}</b></span></div>
+                    </div>
+                    
+                    <div class="col-span-2 text-center text-xs border-r border-gray-100 px-1">
+                        <div class="flex justify-between"><span class="text-gray-400">In:</span> <span class="font-mono font-bold text-blue-600">${req.zoho.inTime}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Out:</span> <span class="font-mono font-bold text-blue-600">${req.zoho.outTime}</span></div>
+                    </div>
+
+                    <div class="col-span-2 text-center text-xs border-r border-gray-100 px-1">
+                        <div class="flex justify-between"><span class="text-gray-400">In:</span> <span class="font-mono font-bold text-purple-600">${req.tl.inTime}</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Out:</span> <span class="font-mono font-bold text-purple-600">${req.tl.outTime}</span></div>
+                        <div class="flex justify-between mt-1 pt-1 border-t border-gray-100"><span class="text-gray-400">Total:</span> <span class="font-mono font-bold text-purple-600">${req.tl.totalIncIdle}</span></div>
+                    </div>
+
+                    <div class="col-span-1 text-xs">
+                        <div class="flex flex-col gap-1"><span class="text-gray-400 line-through text-[10px]">${req.oldStatus}</span><span class="text-blue-700 font-bold">${req.newStatus}</span></div>
+                    </div>
+                    
+                    <div class="col-span-2 text-right flex flex-col items-end gap-1">${actionButtons}${statusBadge}</div>`;
+                list.appendChild(item);
+            });
+        }
+
+        function promptAction(rowIndex, action) {
+            selectedRequestIndex = rowIndex; selectedAction = action;
+            document.getElementById('confirmActionText').innerText = action.toLowerCase();
+            document.getElementById('confirmActionText').className = action === 'Approved' ? "font-bold text-green-600" : "font-bold text-red-600";
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+        function closeConfirmModal() { document.getElementById('confirmModal').classList.add('hidden'); }
+        document.getElementById('btnConfirm').onclick = async function() {
+            const btn = document.getElementById('btnConfirm'); btn.innerHTML = `<i class="ph ph-spinner animate-spin"></i> Processing`; btn.disabled = true;
+            try {
+                const response = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "handleRegularizationAction", rowIndex: selectedRequestIndex, decision: selectedAction }) });
+                const result = await response.json();
+                if (result.status === "success") { closeConfirmModal(); loadRequests(); } else { alert("Error: " + result.message); }
+            } catch (e) { console.error(e); } finally { btn.innerHTML = "Yes, Proceed"; btn.disabled = false; }
+        };
+        loadRequests();
+    </script>
+</body>
+</html>
