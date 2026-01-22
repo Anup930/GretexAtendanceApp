@@ -10,16 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> body { font-family: 'Inter', sans-serif; } </style>
 </head>
-<body class="bg-gray-50 flex h-screen overflow-hidden">
+<body class="bg-slate-50 flex h-screen overflow-hidden text-slate-800">
 
     <script>
         const currentUserStr = localStorage.getItem("currentUser");
-        if (!currentUserStr) {
-            window.location.href = "index.html";
-        }
+        if (!currentUserStr) window.location.href = "index.html";
     </script>
 
-    <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col flex-shrink-0">
+    <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col flex-shrink-0 transition-all duration-300">
         <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-[#0f172a]">
             <div class="flex items-center gap-2 text-white font-bold text-lg tracking-wide">
                 <i class="ph-fill ph-squares-four text-blue-500 text-xl"></i>
@@ -27,114 +25,178 @@
             </div>
         </div>
         <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
-           <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
-            <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
-            <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 text-white rounded-lg shadow-md transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
-            <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span></a>
-            <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
-            <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Summary View</span></a>
-            <a href="latelogin.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span></a>
-            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Aproval</span></a>
+             <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-900/50 transition">
+                <i class="ph ph-chart-pie-slice text-lg"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span>
+            </a>
+            <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span>
+            </a>
+            <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span>
+            </a>
+            <a href="latelogin.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span>
+            </a>
+            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Approval</span>
+            </a>
+            <div class="pt-4 pb-2">
+                <p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Views</p>
+            </div>
+            <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span>
+            </a>
+            <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition">
+                <i class="ph ph-table text-lg"></i><span class="font-medium">Summary View</span>
+            </a>
         </nav>
 
         <div class="p-4 border-t border-gray-800 bg-[#0f172a]">
             <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold" id="userAvatar">A</div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md" id="userAvatar">A</div>
                     <div>
                         <p class="text-sm font-bold text-white" id="sidebarUserName">Loading...</p>
                         <p class="text-xs text-gray-400" id="sidebarUserRole">...</p>
                     </div>
                 </div>
-                <button onclick="logout()" class="text-gray-400 hover:text-white" title="Sign Out">
+                <button onclick="logout()" class="text-gray-400 hover:text-white transition" title="Sign Out">
                     <i class="ph ph-sign-out text-xl"></i>
                 </button>
             </div>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden">
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm">
-            <h2 class="text-xl font-bold text-gray-800">Company Overview</h2>
-            <button onclick="window.location.reload()" class="p-2 hover:bg-gray-100 rounded-full">
-                <i class="ph ph-arrows-clockwise text-xl"></i>
-            </button>
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm z-10">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Executive Dashboard</h2>
+                <p class="text-xs text-gray-500">Welcome back, get an overview of your workforce.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-xs text-gray-500 bg-gray-100 px-3 py-1.5 rounded-full font-medium">
+                    <i class="ph-bold ph-calendar-blank mr-1"></i> <span id="currentDate">-</span>
+                </div>
+                <button onclick="initDashboard()" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition">
+                    <i class="ph ph-arrows-clockwise text-xl"></i>
+                </button>
+            </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Total Unique Emp</p>
-                        <h3 id="stat-total-emp" class="text-3xl font-bold text-gray-900 mt-1">...</h3>
+        <div class="flex-1 overflow-y-auto p-6 bg-slate-50">
+            
+            <div class="mb-8">
+                <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="ph-fill ph-bell-ringing text-orange-500"></i> Actions Required
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div onclick="window.location.href='Regularization.html'" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition cursor-pointer group relative overflow-hidden">
+                        <div class="absolute right-0 top-0 h-full w-1 bg-orange-500"></div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Pending Regularization</p>
+                                <h3 id="stat-reg" class="text-3xl font-bold text-gray-900 mt-2">...</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center group-hover:bg-orange-600 group-hover:text-white transition">
+                                <i class="ph-bold ph-file-text text-xl"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-orange-600 mt-3 font-medium">Needs Approval</p>
                     </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
-                        <i class="ph-fill ph-users-three text-2xl"></i>
+
+                    <div onclick="window.location.href='compoff.html'" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition cursor-pointer group relative overflow-hidden">
+                        <div class="absolute right-0 top-0 h-full w-1 bg-purple-500"></div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Pending Comp-Off</p>
+                                <h3 id="stat-comp" class="text-3xl font-bold text-gray-900 mt-2">...</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition">
+                                <i class="ph-bold ph-calendar-plus text-xl"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-purple-600 mt-3 font-medium">Review Requests</p>
                     </div>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Pending Regularization</p>
-                        <h3 id="stat-reg" class="text-3xl font-bold text-gray-900 mt-1">...</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
-                        <i class="ph-fill ph-warning-circle text-2xl"></i>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500">Avg. Login Hours</p>
-                        <h3 id="stat-avg-hours" class="text-3xl font-bold text-gray-900 mt-1">...</h3>
-                    </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                        <i class="ph-fill ph-timer text-2xl"></i>
+
+                    <div onclick="window.location.href='latelogin.html'" class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition cursor-pointer group relative overflow-hidden">
+                        <div class="absolute right-0 top-0 h-full w-1 bg-red-500"></div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-gray-500 text-sm font-medium">Open Late Logins</p>
+                                <h3 id="stat-late" class="text-3xl font-bold text-gray-900 mt-2">...</h3>
+                            </div>
+                            <div class="w-10 h-10 bg-red-50 text-red-600 rounded-lg flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition">
+                                <i class="ph-bold ph-clock-countdown text-xl"></i>
+                            </div>
+                        </div>
+                        <p class="text-xs text-red-600 mt-3 font-medium">Pending Settlement</p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">Day-wise Attendance Trends</h3>
-                    <div class="relative h-72 w-full">
-                        <canvas id="attendanceChart"></canvas>
+            <div class="mb-8">
+                <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <i class="ph-fill ph-chart-bar text-blue-500"></i> Analytics
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    
+                    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-6 rounded-xl shadow-lg text-white flex flex-col justify-between">
+                        <div>
+                            <p class="text-blue-100 text-sm font-medium">Total Employees</p>
+                            <h3 id="stat-total-emp" class="text-4xl font-bold mt-2">...</h3>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-blue-500/50">
+                            <p class="text-blue-100 text-sm font-medium">Avg. Login Hours</p>
+                            <h3 id="stat-avg-hours" class="text-2xl font-bold mt-1">...</h3>
+                        </div>
                     </div>
-                </div>
 
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-800 mb-4">Today's Status</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <span class="flex items-center gap-2 text-sm font-medium"><div class="w-3 h-3 bg-green-500 rounded-full"></div> Present</span>
-                            <span class="font-bold text-gray-800" id="today-p">-</span>
+                    <div class="md:col-span-2 bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-gray-700 text-sm">Attendance Trend (7 Days)</h4>
                         </div>
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <span class="flex items-center gap-2 text-sm font-medium"><div class="w-3 h-3 bg-blue-500 rounded-full"></div> WFH / HD</span>
-                            <span class="font-bold text-gray-800" id="today-wfh">-</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                            <span class="flex items-center gap-2 text-sm font-medium"><div class="w-3 h-3 bg-red-500 rounded-full"></div> Leave / LWP</span>
-                            <span class="font-bold text-gray-800" id="today-lwp">-</span>
+                        <div class="relative h-48 w-full">
+                            <canvas id="attendanceChart"></canvas>
                         </div>
                     </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center">
+                        <h4 class="font-bold text-gray-700 text-sm mb-4 w-full text-left">Today's Split</h4>
+                        <div class="relative h-32 w-32">
+                            <canvas id="todayDoughnut"></canvas>
+                        </div>
+                        <div class="mt-4 w-full space-y-2">
+                            <div class="flex justify-between text-xs"><span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-green-500"></div> Present</span> <span class="font-bold" id="today-p">-</span></div>
+                            <div class="flex justify-between text-xs"><span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-blue-500"></div> WFH</span> <span class="font-bold" id="today-wfh">-</span></div>
+                            <div class="flex justify-between text-xs"><span class="flex items-center gap-1"><div class="w-2 h-2 rounded-full bg-red-500"></div> Absent</span> <span class="font-bold" id="today-lwp">-</span></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
         </div>
     </main>
 
     <script>
-        // PASTE YOUR NEW DEPLOYED URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; 
 
         window.onload = function() {
-            // 1. Display User Info
+            // Set Date
+            const now = new Date();
+            document.getElementById('currentDate').innerText = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+            // User Info
             const user = JSON.parse(localStorage.getItem("currentUser"));
             if(user) {
                 document.getElementById('sidebarUserName').innerText = user.name;
                 document.getElementById('sidebarUserRole').innerText = user.role;
                 document.getElementById('userAvatar').innerText = user.name.charAt(0).toUpperCase();
             }
-
-            // 2. Load Data
             initDashboard();
         };
 
@@ -153,44 +215,88 @@
                 
                 if (result.status === "success") {
                     const data = result.data;
+                    
+                    // 1. Overview Stats
                     document.getElementById("stat-total-emp").innerText = data.totalEmp;
-                    document.getElementById("stat-reg").innerText = data.totalReg;
                     document.getElementById("stat-avg-hours").innerText = data.avgHours + "h";
+
+                    // 2. Action Stats
+                    document.getElementById("stat-reg").innerText = data.pendingReg;
+                    document.getElementById("stat-comp").innerText = data.pendingComp;
+                    document.getElementById("stat-late").innerText = data.openLate;
+
+                    // 3. Trends Chart
                     renderChart(data.chart);
 
+                    // 4. Today's Doughnut
                     const lastIdx = data.chart.labels.length - 1;
-                    document.getElementById("today-p").innerText = data.chart.datasets[0].data[lastIdx] || 0;
-                    document.getElementById("today-wfh").innerText = data.chart.datasets[1].data[lastIdx] || 0;
-                    document.getElementById("today-lwp").innerText = data.chart.datasets[2].data[lastIdx] || 0;
+                    const p = data.chart.datasets[0].data[lastIdx] || 0;
+                    const wfh = data.chart.datasets[1].data[lastIdx] || 0;
+                    const lwp = data.chart.datasets[2].data[lastIdx] || 0;
+                    
+                    document.getElementById("today-p").innerText = p;
+                    document.getElementById("today-wfh").innerText = wfh;
+                    document.getElementById("today-lwp").innerText = lwp;
+
+                    renderDoughnut(p, wfh, lwp);
                 }
             } catch (error) {
                 console.error("Error loading dashboard:", error);
             }
         }
 
+        let barChartInstance = null;
+        let doughnutChartInstance = null;
+
         function renderChart(chartData) {
             const ctx = document.getElementById('attendanceChart').getContext('2d');
-            new Chart(ctx, {
+            if(barChartInstance) barChartInstance.destroy();
+
+            barChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: chartData.labels,
                     datasets: [
-                        { label: 'Present', data: chartData.datasets[0].data, backgroundColor: '#22c55e', borderRadius: 4 },
-                        { label: 'WFH / Remote', data: chartData.datasets[1].data, backgroundColor: '#3b82f6', borderRadius: 4 },
-                        { label: 'Leave / Absent', data: chartData.datasets[2].data, backgroundColor: '#ef4444', borderRadius: 4 }
+                        { label: 'Present', data: chartData.datasets[0].data, backgroundColor: '#22c55e', borderRadius: 4, barThickness: 10 },
+                        { label: 'WFH', data: chartData.datasets[1].data, backgroundColor: '#3b82f6', borderRadius: 4, barThickness: 10 },
+                        { label: 'Absent', data: chartData.datasets[2].data, backgroundColor: '#ef4444', borderRadius: 4, barThickness: 10 }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, grid: { color: '#f3f4f6' } }, x: { grid: { display: false } } },
-                    plugins: { legend: { position: 'bottom' } }
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } } }, 
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } } 
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderDoughnut(p, wfh, lwp) {
+            const ctx = document.getElementById('todayDoughnut').getContext('2d');
+            if(doughnutChartInstance) doughnutChartInstance.destroy();
+
+            doughnutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['P', 'WFH', 'A'],
+                    datasets: [{
+                        data: [p, wfh, lwp],
+                        backgroundColor: ['#22c55e', '#3b82f6', '#ef4444'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { display: false } }
                 }
             });
         }
     </script>
 </body>
 </html>
-
-
-
