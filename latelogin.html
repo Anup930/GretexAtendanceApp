@@ -27,9 +27,9 @@
             <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
             <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
             <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span></a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span></a>
             <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
             <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Summary View</span></a>
-            <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span></a>
         </nav>
 
         <div class="p-4 border-t border-gray-800 bg-[#0f172a]">
@@ -83,7 +83,6 @@
                                 class="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
                             <i class="ph ph-funnel absolute left-3 top-2.5 text-gray-400"></i>
                         </div>
-
                         <div class="relative w-64 mb-2">
                             <select id="employeeFilter" onchange="resetAndRender()" class="w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer font-medium text-gray-700">
                                 <option value="all">All Employees</option>
@@ -97,7 +96,7 @@
                     <div class="col-span-3">Employee Details</div>
                     <div class="col-span-2 text-center">Month</div>
                     <div class="col-span-2 text-center bg-orange-50 text-orange-700 rounded border border-orange-100">Late Count</div>
-                    <div class="col-span-2 text-center bg-red-50 text-red-700 rounded border border-red-100">Expected Ded.</div>
+                    <div class="col-span-2 text-center bg-red-50 text-red-700 rounded border border-red-100">Exp / Total Ded</div>
                     <div class="col-span-1 text-center">Status</div>
                     <div class="col-span-2 text-right">Action</div>
                 </div>
@@ -108,25 +107,16 @@
 
                 <div class="p-3 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-gray-600 font-medium">Rows per page:</span>
-                        <select id="rowsPerPage" onchange="changeRowsPerPage()" class="border border-gray-300 rounded text-xs p-1 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
-                            <option value="5" selected>5</option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="200">200</option>
+                        <span class="text-xs text-gray-600 font-medium">Rows:</span>
+                        <select id="rowsPerPage" onchange="changeRowsPerPage()" class="border border-gray-300 rounded text-xs p-1 bg-white cursor-pointer">
+                            <option value="5">5</option><option value="10" selected>10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option>
                         </select>
                     </div>
                     <div class="flex items-center gap-4">
                         <span class="text-xs text-gray-600 font-medium" id="pageInfo">Showing 0-0 of 0</span>
                         <div class="flex gap-1">
-                            <button onclick="changePage(-1)" id="btnPrev" class="p-1.5 rounded-md hover:bg-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition">
-                                <i class="ph-bold ph-caret-left"></i>
-                            </button>
-                            <button onclick="changePage(1)" id="btnNext" class="p-1.5 rounded-md hover:bg-gray-200 text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition">
-                                <i class="ph-bold ph-caret-right"></i>
-                            </button>
+                            <button onclick="changePage(-1)" id="btnPrev" class="p-1.5 rounded-md hover:bg-gray-200 text-gray-600"><i class="ph-bold ph-caret-left"></i></button>
+                            <button onclick="changePage(1)" id="btnNext" class="p-1.5 rounded-md hover:bg-gray-200 text-gray-600"><i class="ph-bold ph-caret-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -134,14 +124,38 @@
         </div>
     </main>
 
-    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center">
-            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl"><i class="ph ph-gavel"></i></div>
-            <h3 class="text-lg font-bold text-gray-800 mb-2">Settle Deduction?</h3>
-            <p class="text-sm text-gray-500 mb-6">This will mark the deduction as <span class="font-bold text-gray-800">Settled</span> & <span class="font-bold text-green-600">Approved</span>.</p>
+    <div id="deductModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden border border-gray-200">
+            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+                <h3 class="text-white font-bold text-lg">Settle Deduction</h3>
+                <button onclick="document.getElementById('deductModal').classList.add('hidden')" class="text-blue-100 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-500 mb-4">Employee: <span id="modalDeductName" class="font-bold text-gray-800"></span></p>
+                <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Final Deduction Days</label>
+                <div class="relative">
+                    <input type="number" id="deductQtyInput" step="0.5" class="w-full pl-4 pr-4 py-2 border border-gray-300 rounded-lg text-lg font-bold text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <span class="absolute right-4 top-2.5 text-gray-400 text-sm">Days</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Adjust this value if you want to give a concession.</p>
+            </div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3 border-t">
+                <button onclick="document.getElementById('deductModal').classList.add('hidden')" class="px-4 py-2 text-sm font-bold text-gray-600 hover:text-gray-800">Cancel</button>
+                <button onclick="processDeduct()" id="btnSaveDeduct" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow hover:bg-blue-700">Submit Settle</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="rejectModal" class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center border border-red-100">
+            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600 text-2xl"><i class="ph-fill ph-gavel"></i></div>
+            <h3 class="text-lg font-bold text-gray-800 mb-2">Reject & Deduct Full?</h3>
+            <p class="text-sm text-gray-500 mb-2">This will mark the status as <span class="font-bold text-red-600">Rejected</span>.</p>
+            <p class="text-sm text-gray-800 mb-6 bg-red-50 p-2 rounded border border-red-100">Full Deduction of <span id="modalRejectQty" class="font-bold">0</span> days will be applied.</p>
+            
             <div class="flex gap-3 justify-center">
-                <button onclick="closeConfirmModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
-                <button id="btnConfirm" class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-md">Confirm</button>
+                <button onclick="document.getElementById('rejectModal').classList.add('hidden')" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+                <button onclick="processReject()" id="btnSaveReject" class="px-4 py-2 text-sm font-bold text-white bg-red-600 rounded-lg hover:bg-red-700 shadow-md">Confirm Reject</button>
             </div>
         </div>
     </div>
@@ -155,34 +169,21 @@
             <div class="p-0 overflow-auto flex-1">
                 <table class="w-full text-sm text-left text-gray-500">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3">Month</th>
-                            <th class="px-6 py-3 text-center">Late Count</th>
-                            <th class="px-6 py-3 text-center">Deduction</th>
-                            <th class="px-6 py-3 text-center">Status</th>
-                            <th class="px-6 py-3">Remark</th>
-                        </tr>
+                        <tr><th class="px-6 py-3">Month</th><th class="px-6 py-3 text-center">Late Count</th><th class="px-6 py-3 text-center">Final Ded.</th><th class="px-6 py-3 text-center">Status</th><th class="px-6 py-3">Remark</th></tr>
                     </thead>
                     <tbody id="historyBody" class="divide-y divide-gray-200"></tbody>
                 </table>
             </div>
-            <div class="bg-gray-50 px-6 py-3 text-right">
-                <button onclick="document.getElementById('historyModal').classList.add('hidden')" class="text-sm text-blue-600 font-bold">Close</button>
-            </div>
+            <div class="bg-gray-50 px-6 py-3 text-right"><button onclick="document.getElementById('historyModal').classList.add('hidden')" class="text-sm text-blue-600 font-bold">Close</button></div>
         </div>
     </div>
 
     <script>
-        // PASTE YOUR DEPLOYED URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; 
+        const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; // <--- PASTE YOUR URL HERE
 
-        let allData = [];
-        let currentFilter = 'Open';
-        let selectedRow = null;
-        
-        // Pagination State
-        let currentPage = 1;
-        let rowsPerPage = 5;
+        let allData = []; let currentFilter = 'Open'; let selectedRow = null;
+        let currentPage = 1; let rowsPerPage = 10;
+        let tempExpectedDed = 0; 
 
         function logout() { localStorage.removeItem("currentUser"); window.location.href = "index.html"; }
 
@@ -206,9 +207,7 @@
                     updateStats();
                     populateDropdown();
                     renderTable();
-                } else {
-                    document.getElementById('dataList').innerHTML = `<div class="text-center p-10 text-red-500">Error: ${json.message}</div>`;
-                }
+                } else { document.getElementById('dataList').innerHTML = `<div class="text-center p-10 text-red-500">Error: ${json.message}</div>`; }
             } catch(e) { console.error(e); }
         }
 
@@ -217,13 +216,7 @@
             s.innerHTML = '<option value="all">All Employees</option>';
             const unique = new Map();
             allData.forEach(d => unique.set(d.empId, d.empName));
-            
-            // --- FIXED SORTING LOGIC ---
-            [...unique.entries()].sort((a,b) => {
-                const nameA = (a[1] || "").toString().toLowerCase();
-                const nameB = (b[1] || "").toString().toLowerCase();
-                return nameA.localeCompare(nameB);
-            }).forEach(([id, name]) => {
+            [...unique.entries()].sort((a,b)=> (a[1]||"").toString().localeCompare((b[1]||"").toString())).forEach(([id, name]) => {
                 s.innerHTML += `<option value="${id}">${name}</option>`;
             });
         }
@@ -232,7 +225,6 @@
             const open = allData.filter(d => d.status === 'Open').length;
             const settled = allData.filter(d => d.status === 'Settled').length;
             const ded = allData.filter(d => d.status === 'Open').reduce((acc, curr) => acc + (parseFloat(curr.expectedDed)||0), 0);
-            
             document.getElementById('stat-open').innerText = open;
             document.getElementById('stat-settled').innerText = settled;
             document.getElementById('stat-deduction').innerText = ded;
@@ -245,89 +237,62 @@
             resetAndRender();
         }
 
-        function resetAndRender() {
-            currentPage = 1;
-            renderTable();
-        }
-
-        function changeRowsPerPage() {
-            rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
-            currentPage = 1;
-            renderTable();
-        }
-
-        function changePage(delta) {
-            currentPage += delta;
-            renderTable();
-        }
+        function resetAndRender() { currentPage = 1; renderTable(); }
+        function changeRowsPerPage() { rowsPerPage = parseInt(document.getElementById('rowsPerPage').value); currentPage = 1; renderTable(); }
+        function changePage(delta) { currentPage += delta; renderTable(); }
 
         function renderTable() {
             const list = document.getElementById('dataList');
+            list.innerHTML = '';
             const empId = document.getElementById('employeeFilter').value;
             const advFilter = document.getElementById('advFilter').value.toLowerCase().trim();
             
-            // 1. Base Filter (Tab)
             let filtered = currentFilter === 'Open' ? allData.filter(d => d.status === 'Open') : allData;
             
-            // 2. Employee Filter
             if(empId !== 'all') filtered = filtered.filter(d => d.empId == empId);
-
-            // 3. Advanced Filter
             if(advFilter) {
                 const lateMatch = advFilter.match(/late\s*([><=])\s*(\d+)/);
                 const dedMatch = advFilter.match(/ded\s*([><=])\s*(\d+)/);
-
                 if(lateMatch) {
                     const op = lateMatch[1]; const val = parseInt(lateMatch[2]);
-                    filtered = filtered.filter(d => {
-                        if(op==='>') return d.lateCount > val;
-                        if(op==='<') return d.lateCount < val;
-                        return d.lateCount == val;
-                    });
+                    filtered = filtered.filter(d => { if(op==='>') return d.lateCount > val; if(op==='<') return d.lateCount < val; return d.lateCount == val; });
                 }
                 if(dedMatch) {
                     const op = dedMatch[1]; const val = parseFloat(dedMatch[2]);
-                    filtered = filtered.filter(d => {
-                        if(op==='>') return d.expectedDed > val;
-                        if(op==='<') return d.expectedDed < val;
-                        return d.expectedDed == val;
-                    });
+                    filtered = filtered.filter(d => { if(op==='>') return d.expectedDed > val; if(op==='<') return d.expectedDed < val; return d.expectedDed == val; });
                 }
             }
 
-            // --- PAGINATION LOGIC ---
             const totalItems = filtered.length;
             const totalPages = Math.ceil(totalItems / rowsPerPage);
-            
-            // Boundary checks
             if (currentPage < 1) currentPage = 1;
             if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
-
             const startIdx = (currentPage - 1) * rowsPerPage;
-            const endIdx = startIdx + rowsPerPage;
-            const paginatedData = filtered.slice(startIdx, endIdx);
+            const paginatedData = filtered.slice(startIdx, startIdx + rowsPerPage);
 
-            list.innerHTML = '';
-            
             if (totalItems === 0) { 
                 list.innerHTML = `<div class="text-center p-10 text-gray-400 text-sm">No records found.</div>`; 
-                updatePaginationControls(0, 0, 0);
+                document.getElementById('pageInfo').innerText = `Showing 0-0 of 0`;
                 return; 
             }
 
             paginatedData.forEach(item => {
-                let badgeClass = item.status === 'Settled' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700';
-                const dedVal = parseFloat(item.expectedDed) || 0;
-                let actionBtn = '';
+                let badgeClass = item.status === 'Settled' ? 'bg-green-100 text-green-700' : (item.status === 'Rejected' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700');
+                
+                let actions = '';
+                const expDed = parseFloat(item.expectedDed) || 0;
+                const totDed = (item.totalDed !== '' && item.totalDed !== undefined) ? item.totalDed : '-';
 
                 if (item.status === 'Open') {
-                    if (dedVal === 0) {
-                        actionBtn = `<button disabled class="bg-gray-300 text-white px-3 py-1.5 rounded text-xs font-bold cursor-not-allowed" title="No Deduction">Settle</button>`;
-                    } else {
-                        actionBtn = `<button onclick="event.stopPropagation(); promptAction(${item.rowIndex})" class="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold hover:bg-blue-700 shadow-sm">Settle</button>`;
-                    }
+                    // REJECT = Red Button (Full Deduction)
+                    const rejectBtn = `<button onclick="event.stopPropagation(); openRejectModal(${item.rowIndex}, '${item.expectedDed}')" class="bg-red-50 text-red-600 w-7 h-7 rounded flex items-center justify-center hover:bg-red-600 hover:text-white transition border border-red-200" title="Reject (Full Deduction)"><i class="ph-bold ph-x"></i></button>`;
+                    
+                    // DEDUCT = Blue Button (Edit Deduction) - Disable if 0
+                    const deductBtn = `<button onclick="event.stopPropagation(); openDeductModal(${item.rowIndex}, '${item.expectedDed}', '${item.empName}')" class="bg-blue-50 text-blue-600 w-7 h-7 rounded flex items-center justify-center hover:bg-blue-600 hover:text-white transition border border-blue-200 ${expDed===0 ? 'opacity-50 cursor-not-allowed' : ''}" ${expDed===0 ? 'disabled' : ''} title="Settle / Edit Deduction"><i class="ph-bold ph-check"></i></button>`;
+
+                    actions = `<div class="flex gap-2 justify-end">${rejectBtn}${deductBtn}</div>`;
                 } else {
-                    actionBtn = `<span class="text-xs text-gray-400 italic">Locked</span>`;
+                    actions = `<span class="text-xs text-gray-400 italic">Locked</span>`;
                 }
 
                 const row = document.createElement('div');
@@ -335,67 +300,76 @@
                 row.onclick = () => openHistory(item.empId, item.empName);
 
                 row.innerHTML = `
-                    <div class="col-span-3">
-                        <p class="font-bold text-gray-800 text-xs">${item.empName}</p>
-                        <p class="text-[10px] text-gray-500">${item.dayType} | ID: ${item.empId}</p>
-                    </div>
+                    <div class="col-span-3"><p class="font-bold text-gray-800 text-xs">${item.empName}</p><p class="text-[10px] text-gray-500">${item.dayType} | ID: ${item.empId}</p></div>
                     <div class="col-span-2 text-center text-xs font-medium text-gray-600">${item.month}</div>
                     <div class="col-span-2 text-center"><span class="font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded border border-orange-100">${item.lateCount}</span></div>
-                    <div class="col-span-2 text-center"><span class="font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100">${item.expectedDed}</span></div>
+                    <div class="col-span-2 text-center"><span class="font-bold text-red-600 bg-red-50 px-2 py-1 rounded border border-red-100" title="Exp: ${item.expectedDed}">${currentFilter==='Open' ? item.expectedDed : totDed}</span></div>
                     <div class="col-span-1 text-center"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase">${item.status}</span></div>
-                    <div class="col-span-2 text-right">${actionBtn}</div>
+                    <div class="col-span-2 text-right">${actions}</div>
                 `;
                 list.appendChild(row);
             });
 
-            updatePaginationControls(startIdx + 1, Math.min(endIdx, totalItems), totalItems);
+            document.getElementById('pageInfo').innerText = `Showing ${startIdx + 1}-${Math.min(startIdx + rowsPerPage, totalItems)} of ${totalItems}`;
+            document.getElementById('btnPrev').disabled = currentPage === 1;
+            document.getElementById('btnNext').disabled = currentPage >= totalPages;
         }
 
-        function updatePaginationControls(start, end, total) {
-            document.getElementById('pageInfo').innerText = `Showing ${start}-${end} of ${total}`;
-            document.getElementById('btnPrev').disabled = currentPage === 1 || total === 0;
-            const totalPages = Math.ceil(total / rowsPerPage);
-            document.getElementById('btnNext').disabled = currentPage >= totalPages || total === 0;
-        }
-
-        // --- ACTION LOGIC ---
-        function promptAction(idx) {
+        function openRejectModal(idx, expected) {
             selectedRow = idx;
-            document.getElementById('confirmModal').classList.remove('hidden');
+            tempExpectedDed = expected;
+            document.getElementById('modalRejectQty').innerText = expected;
+            document.getElementById('rejectModal').classList.remove('hidden');
         }
-        function closeConfirmModal() { document.getElementById('confirmModal').classList.add('hidden'); }
+        
+        function openDeductModal(idx, expected, name) {
+            selectedRow = idx;
+            document.getElementById('modalDeductName').innerText = name;
+            document.getElementById('deductQtyInput').value = expected;
+            document.getElementById('deductModal').classList.remove('hidden');
+        }
 
-        document.getElementById('btnConfirm').onclick = async function() {
-            const btn = document.getElementById('btnConfirm'); btn.innerHTML = `<i class="ph ph-spinner animate-spin"></i> Processing...`; btn.disabled = true;
+        async function processReject() {
+            const btn = document.getElementById('btnSaveReject'); btn.innerText = "Processing..."; btn.disabled = true;
             try {
-                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "handleLateLoginAction", rowIndex: selectedRow, action: "Approve" }) });
+                // FIXED: Use 'decision' instead of 'action' for logic
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "handleLateLoginAction", rowIndex: selectedRow, decision: "Reject", reqQty: tempExpectedDed }) });
                 const json = await res.json();
-                if(json.status === "success") { closeConfirmModal(); loadData(); } else { alert("Error: " + json.message); }
-            } catch(e) { console.error(e); } finally { btn.innerHTML = "Confirm"; btn.disabled = false; }
-        };
+                if(json.status === "success") { document.getElementById('rejectModal').classList.add('hidden'); loadData(); } else { alert("Error: "+json.message); }
+            } catch(e) { console.error(e); } finally { btn.innerText = "Confirm Reject"; btn.disabled = false; }
+        }
 
-        // --- HISTORY LOGIC ---
+        async function processDeduct() {
+            const qty = document.getElementById('deductQtyInput').value;
+            if(!qty) return alert("Please enter deduction days");
+            
+            const btn = document.getElementById('btnSaveDeduct'); btn.innerText = "Processing..."; btn.disabled = true;
+            try {
+                // FIXED: Use 'decision' instead of 'action' for logic
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "handleLateLoginAction", rowIndex: selectedRow, decision: "Deduct", reqQty: qty }) });
+                const json = await res.json();
+                if(json.status === "success") { document.getElementById('deductModal').classList.add('hidden'); loadData(); } else { alert("Error: "+json.message); }
+            } catch(e) { console.error(e); } finally { btn.innerText = "Submit Settle"; btn.disabled = false; }
+        }
+
         function openHistory(empId, empName) {
             document.getElementById('histTitle').innerText = `History: ${empName}`;
             const historyBody = document.getElementById('historyBody');
             historyBody.innerHTML = '';
+            const history = allData.filter(d => d.empId == empId && d.status !== 'Open');
 
-            const history = allData.filter(d => d.empId == empId);
-
-            if(history.length === 0) {
-                historyBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No history found.</td></tr>`;
-            } else {
+            if(history.length === 0) { historyBody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-400">No settled history found.</td></tr>`; } 
+            else {
                 history.forEach(h => {
-                    let stClass = h.status === 'Settled' ? 'text-green-600 bg-green-50' : 'text-blue-600 bg-blue-50';
+                    let stClass = h.status === 'Rejected' ? 'text-red-600 bg-red-50' : 'text-green-600 bg-green-50';
                     historyBody.innerHTML += `
                         <tr class="border-b hover:bg-gray-50">
                             <td class="px-6 py-3 font-medium text-gray-900">${h.month}</td>
                             <td class="px-6 py-3 text-center text-orange-600 font-bold">${h.lateCount}</td>
-                            <td class="px-6 py-3 text-center text-red-600 font-bold">${h.expectedDed}</td>
+                            <td class="px-6 py-3 text-center text-red-600 font-bold">${h.totalDed}</td>
                             <td class="px-6 py-3 text-center"><span class="${stClass} px-2 py-1 rounded text-xs font-bold">${h.status}</span></td>
                             <td class="px-6 py-3 text-gray-500 text-xs">${h.remark || '-'}</td>
-                        </tr>
-                    `;
+                        </tr>`;
                 });
             }
             document.getElementById('historyModal').classList.remove('hidden');
