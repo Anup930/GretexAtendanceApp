@@ -11,6 +11,11 @@
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
 
+    <script>
+        const currentUserStr = localStorage.getItem("currentUser");
+        if (!currentUserStr) window.location.href = "index.html";
+    </script>
+
     <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col flex-shrink-0">
         <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-[#0f172a]">
             <div class="flex items-center gap-2 text-white font-bold text-lg tracking-wide">
@@ -23,7 +28,24 @@
             <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
             <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
             <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp Off</span></a>
+            <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
+            <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Summary View</span></a>
         </nav>
+
+        <div class="p-4 border-t border-gray-800 bg-[#0f172a]">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold" id="userAvatar">A</div>
+                    <div>
+                        <p class="text-sm font-bold text-white" id="sidebarUserName">Loading...</p>
+                        <p class="text-xs text-gray-400" id="sidebarUserRole">...</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="text-gray-400 hover:text-white" title="Sign Out">
+                    <i class="ph ph-sign-out text-xl"></i>
+                </button>
+            </div>
+        </div>
     </aside>
 
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
@@ -87,7 +109,8 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; // <--- PASTE YOUR URL HERE
+        // PASTE YOUR NEW DEPLOYED URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec";
 
         let allRequests = [];
         let currentFilter = 'Pending';
@@ -95,7 +118,20 @@
         let selectedAction = null;
         let selectedQty = 0;
 
+        function logout() {
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+        }
+
         async function loadCompRequests() {
+            // Display User
+            const user = JSON.parse(localStorage.getItem("currentUser"));
+            if(user) {
+                document.getElementById('sidebarUserName').innerText = user.name;
+                document.getElementById('sidebarUserRole').innerText = user.role;
+                document.getElementById('userAvatar').innerText = user.name.charAt(0).toUpperCase();
+            }
+
             document.getElementById('compList').innerHTML = `<div class="flex flex-col items-center justify-center h-full text-gray-400"><i class="ph ph-spinner animate-spin text-3xl mb-2"></i><span class="text-sm">Fetching...</span></div>`;
             try {
                 const response = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCompOffRequests" }) });
@@ -123,7 +159,6 @@
 
         function updateStats() {
             document.getElementById('stat-pending').innerText = allRequests.filter(r => r.status === 'Pending').length;
-            // Sum of Qty for approved requests (assuming reqQty is number)
             const approvedQty = allRequests.filter(r => r.status === 'Approved').reduce((acc, curr) => acc + (parseFloat(curr.reqQty)||0), 0);
             document.getElementById('stat-approved').innerText = approvedQty;
             document.getElementById('stat-rejected').innerText = allRequests.filter(r => r.status === 'Rejected').length;
