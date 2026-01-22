@@ -9,10 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> 
         body { font-family: 'Inter', sans-serif; } 
-        /* Transition for expanding columns */
-        .detail-col { display: none; background-color: #f9fafb; }
-        .detail-col.show { display: table-cell; }
-        th.detail-col.show { display: table-cell; background-color: #f3f4f6; color: #4b5563; }
+        /* Column Visibility Classes */
+        .col-detail { display: none; }
+        .col-detail.show { display: table-cell; }
+        th.col-detail.show { background-color: #f9fafb; }
     </style>
 </head>
 <body class="bg-gray-50 flex h-screen overflow-hidden">
@@ -92,8 +92,15 @@
         // --- PASTE YOUR API URL HERE ---
         const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; 
 
-        let allData = [], filteredData = [];
-        let globalHeaders = [];
+        let allHeaders = [];
+        let allRows = [];
+        let filteredRows = [];
+
+        // --- Column Indices (Calculated Dynamically) ---
+        let idxName = -1;
+        let idxId = -1;
+        let idxPayable = -1;
+        let idxLeave = -1;
 
         function logout() {
             localStorage.removeItem("currentUser");
@@ -109,12 +116,28 @@
             }
 
             try {
-                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getAttendanceSummary" }) });
+                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getSummaryViewData" }) });
                 const json = await res.json();
                 if(json.status === "success") {
-                    allData = json.data;
-                    globalHeaders = json.headers; // Capture dynamic headers (P, WF, etc.)
-                    filteredData = allData;
+                    allHeaders = json.headers;
+                    allRows = json.rows;
+                    filteredRows = allRows;
+                    
+                    // --- DYNAMICALLY FIND COLUMNS ---
+                    const findIdx = (name) => allHeaders.findIndex(h => h.toString().trim() === name);
+
+                    // 1. Find Static Columns
+                    idxName = findIdx("Employee Name");
+                    idxId = findIdx("Employee Id");
+                    
+                    // 2. Find Range (Start: Payable Days, End: Leave)
+                    idxPayable = findIdx("Payable Days");
+                    idxLeave = findIdx("Leave");
+
+                    // Fallbacks if columns renamed
+                    if(idxPayable === -1) idxPayable = 2; // Default to Col C
+                    if(idxLeave === -1) idxLeave = 7;     // Default to Col H
+
                     renderTable();
                 }
             } catch(e) { console.error(e); }
@@ -122,14 +145,15 @@
 
         function handleSearch() {
             const q = document.getElementById('searchBox').value.toUpperCase();
-            filteredData = allData.filter(e => e.name.toUpperCase().includes(q));
+            const searchIdx = idxName > -1 ? idxName : 1; 
+            filteredRows = allRows.filter(row => row[searchIdx].toString().toUpperCase().includes(q));
             renderTable();
         }
 
         function toggleView() {
             const isChecked = document.getElementById('toggleDetails').checked;
-            const cols = document.querySelectorAll('.detail-col');
-            cols.forEach(col => {
+            const detailCols = document.querySelectorAll('.col-detail');
+            detailCols.forEach(col => {
                 if(isChecked) col.classList.add('show');
                 else col.classList.remove('show');
             });
@@ -140,61 +164,71 @@
             const thead = document.getElementById('table-head');
             const showDetails = document.getElementById('toggleDetails').checked;
             
-            if(allData.length === 0) { tbody.innerHTML = `<tr><td class="p-4 text-center">Loading...</td></tr>`; return; }
-            if(filteredData.length === 0) { tbody.innerHTML = `<tr><td class="p-4 text-center">No results</td></tr>`; return; }
+            if(allRows.length === 0) { tbody.innerHTML = `<tr><td class="p-4 text-center">Loading...</td></tr>`; return; }
+            if(filteredRows.length === 0) { tbody.innerHTML = `<tr><td class="p-4 text-center">No results</td></tr>`; return; }
 
-            // 1. Build Headers
-            // Fixed Columns based on your Image
-            let headerHTML = `
-                <th class="px-4 py-3 border-r min-w-[200px] sticky left-0 bg-gray-100 z-20">Employee Name</th>
-                <th class="px-4 py-3 border-r text-center">ID</th>
-                <th class="px-4 py-3 border-r text-center bg-blue-50 text-blue-700">Payable Days</th>
-                <th class="px-4 py-3 border-r text-center text-green-700">Present</th>
-                <th class="px-4 py-3 border-r text-center text-red-700">Absent</th>
-                <th class="px-4 py-3 border-r text-center">Week Off</th>
-                <th class="px-4 py-3 border-r text-center">Holiday</th>
-                <th class="px-4 py-3 border-r text-center text-yellow-700">Leave</th>
-            `;
-            // Dynamic Columns (Hidden by default)
-            globalHeaders.forEach(k => {
-                headerHTML += `<th class="px-4 py-3 border-r text-center detail-col ${showDetails?'show':''}">${k}</th>`;
-            });
-            thead.innerHTML = headerHTML;
-
-            // 2. Build Rows
-            const limit = document.getElementById('rowsPerPage').value === 'all' ? filteredData.length : parseInt(document.getElementById('rowsPerPage').value);
-            const items = filteredData.slice(0, limit);
-
-            tbody.innerHTML = items.map(e => {
-                // Determine Summary Values (default 0 if undefined)
-                const s = e.summary || { payable:0, present:0, absent:0, weekOff:0, holiday:0, leave:0 };
-                
-                // Build Dynamic Cells
-                let dynamicCells = '';
-                globalHeaders.forEach(k => {
-                    let count = (e.stats[k] || []).length;
-                    // Styling for non-zero values
-                    let valClass = count > 0 ? "font-bold text-gray-800" : "text-gray-300";
-                    dynamicCells += `<td class="px-4 py-3 border-r text-center detail-col ${showDetails?'show':''}"><span class="${valClass}">${count}</span></td>`;
-                });
-
-                return `
-                <tr class="hover:bg-gray-50 border-b">
-                    <td class="px-4 py-3 border-r font-medium text-blue-600 cursor-pointer sticky left-0 bg-white z-10" onclick="goToDetail('${e.id}')">${e.name}</td>
-                    <td class="px-4 py-3 border-r text-center text-gray-500">${e.id}</td>
-                    
-                    <td class="px-4 py-3 border-r text-center font-bold bg-blue-50 text-blue-700">${s.payable}</td>
-                    <td class="px-4 py-3 border-r text-center font-bold text-green-700">${s.present}</td>
-                    <td class="px-4 py-3 border-r text-center font-bold text-red-700">${s.absent}</td>
-                    <td class="px-4 py-3 border-r text-center text-gray-600">${s.weekOff}</td>
-                    <td class="px-4 py-3 border-r text-center text-gray-600">${s.holiday}</td>
-                    <td class="px-4 py-3 border-r text-center font-bold text-yellow-700">${s.leave}</td>
-                    
-                    ${dynamicCells}
-                </tr>
-            `}).join('');
+            // --- 1. BUILD HEADERS ---
+            let htmlHead = ``;
             
-            document.getElementById('pageInfo').innerText = `Showing ${items.length} of ${filteredData.length}`;
+            // A. Fixed: Name & ID Merged into "Employee"
+            htmlHead += `<th class="px-4 py-3 border-r min-w-[250px] sticky left-0 bg-gray-100 z-20">Employee</th>`;
+
+            // B. Default Range: From [Payable Days] to [Leave]
+            for (let i = idxPayable; i <= idxLeave; i++) {
+                let hName = allHeaders[i];
+                let colorClass = "text-gray-700";
+                
+                if(hName === 'Payable Days') colorClass = "bg-blue-50 text-blue-700";
+                else if(hName === 'Present') colorClass = "text-green-700";
+                else if(hName === 'Absent') colorClass = "text-red-700";
+                else if(hName === 'Leave') colorClass = "text-yellow-700";
+
+                htmlHead += `<th class="px-4 py-3 border-r text-center ${colorClass}">${hName}</th>`;
+            }
+
+            // C. Breakdown Range: Everything AFTER [Leave]
+            for (let i = idxLeave + 1; i < allHeaders.length; i++) {
+                htmlHead += `<th class="px-4 py-3 border-r text-center col-detail ${showDetails?'show':''}">${allHeaders[i]}</th>`;
+            }
+
+            thead.innerHTML = htmlHead;
+
+            // --- 2. BUILD ROWS ---
+            const limit = document.getElementById('rowsPerPage').value === 'all' ? filteredRows.length : parseInt(document.getElementById('rowsPerPage').value);
+            const items = filteredRows.slice(0, limit);
+
+            tbody.innerHTML = items.map(row => {
+                let id = (idxId > -1) ? row[idxId] : row[0];
+                let name = (idxName > -1) ? row[idxName] : row[1];
+                
+                // MERGED NAME (ID) COLUMN
+                let htmlRow = `
+                    <td class="px-4 py-3 border-r font-medium text-blue-600 cursor-pointer sticky left-0 bg-white z-10" onclick="goToDetail('${id}')">
+                        ${name} <span class="text-gray-500 text-xs font-normal">(${id})</span>
+                    </td>
+                `;
+
+                // Default Range Values
+                for (let i = idxPayable; i <= idxLeave; i++) {
+                    let val = row[i];
+                    let hName = allHeaders[i];
+                    let style = "text-gray-800 font-bold";
+                    if(hName === 'Payable Days') style = "bg-blue-50 text-blue-700 font-bold";
+                    
+                    htmlRow += `<td class="px-4 py-3 border-r text-center ${style}">${val}</td>`;
+                }
+
+                // Detailed Range Values
+                for (let i = idxLeave + 1; i < row.length; i++) {
+                    let val = row[i];
+                    let valStyle = (val == 0 || val == '') ? "text-gray-300" : "font-bold text-gray-800";
+                    htmlRow += `<td class="px-4 py-3 border-r text-center col-detail ${showDetails?'show':''}"><span class="${valStyle}">${val}</span></td>`;
+                }
+
+                return `<tr class="hover:bg-gray-50 border-b">${htmlRow}</tr>`;
+            }).join('');
+            
+            document.getElementById('pageInfo').innerText = `Showing ${items.length} of ${filteredRows.length}`;
         }
 
         function goToDetail(id) {
