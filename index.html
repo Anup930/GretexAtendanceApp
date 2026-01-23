@@ -3,54 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Attendance System</title>
+    <title>Portal Access | NextGen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            overflow: hidden; /* Prevents scrollbars from moving blobs */
+        }
+
+        /* Ambient Background Animation */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #4f46e5; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #ec4899; animation-delay: 2s; }
+        .blob-3 { top: 40%; left: 40%; width: 300px; height: 300px; background: #06b6d4; animation-delay: 4s; }
+
+        @keyframes float {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* Custom Scrollbar for inputs */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1e293b inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center font-sans">
+<body class="h-screen flex items-center justify-center relative">
 
-    <div class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-sm border border-gray-200">
-        <div class="text-center mb-8">
-            <div class="bg-blue-600 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <i class="ph ph-lock-key text-white text-2xl"></i>
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <div class="relative z-10 w-full max-w-md p-1">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-pink-500 rounded-3xl blur opacity-30 animate-pulse"></div>
+        
+        <div class="relative bg-slate-900/70 backdrop-blur-xl border border-white/10 p-8 sm:p-10 rounded-3xl shadow-2xl">
+            
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 shadow-lg shadow-blue-500/30 mb-6 transform hover:scale-105 transition duration-300">
+                    <i class="ph-fill ph-fingerprint text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-white tracking-tight">Welcome Back</h1>
+                <p class="text-slate-400 text-sm mt-2 font-light">Securely access your workspace dashboard.</p>
             </div>
-            <h1 class="text-2xl font-bold text-gray-800">Welcome Back</h1>
-            <p class="text-gray-500 text-sm mt-1">Enter your credentials to access the portal.</p>
+
+            <form onsubmit="handleLogin(event)" class="space-y-6">
+                
+                <div class="group">
+                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 ml-1">Email Address</label>
+                    <div class="relative">
+                        <input type="email" id="email" 
+                            class="w-full bg-slate-800/50 text-white pl-12 pr-4 py-3.5 rounded-xl border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:bg-slate-800 transition-all duration-300 outline-none placeholder-slate-500" 
+                            placeholder="name@company.com" required>
+                        <i class="ph ph-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl group-focus-within:text-blue-500 transition-colors"></i>
+                    </div>
+                </div>
+                
+                <div class="group">
+                    <label class="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2 ml-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="password" 
+                            class="w-full bg-slate-800/50 text-white pl-12 pr-4 py-3.5 rounded-xl border border-slate-700 focus:border-pink-500 focus:ring-1 focus:ring-pink-500 focus:bg-slate-800 transition-all duration-300 outline-none placeholder-slate-500" 
+                            placeholder="••••••••" required>
+                        <i class="ph ph-lock-key absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl group-focus-within:text-pink-500 transition-colors"></i>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-btn" 
+                    class="w-full relative overflow-hidden group bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-semibold py-4 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-300 transform hover:-translate-y-1">
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Sign In to Portal
+                        <i class="ph-bold ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </button>
+                
+                <div id="loading" class="hidden mt-4 flex justify-center">
+                    <div class="flex items-center space-x-2 text-blue-400">
+                        <i class="ph ph-spinner animate-spin text-2xl"></i>
+                        <span class="text-sm font-medium">Verifying Credentials...</span>
+                    </div>
+                </div>
+
+                <div id="error-msg" class="hidden mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3">
+                    <i class="ph-fill ph-warning-circle text-red-400 text-xl"></i>
+                    <p class="text-red-400 text-sm font-medium error-text"></p>
+                </div>
+
+            </form>
+            
+            <div class="mt-8 text-center">
+                <p class="text-slate-500 text-xs">Protected by Enterprise Grade Security</p>
+            </div>
         </div>
-
-        <form onsubmit="handleLogin(event)">
-            <div class="mb-5">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                <div class="relative">
-                    <input type="email" id="email" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" placeholder="you@company.com" required>
-                    <i class="ph ph-envelope absolute left-3 top-3.5 text-gray-400 text-lg"></i>
-                </div>
-            </div>
-            
-            <div class="mb-6">
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
-                <div class="relative">
-                    <input type="password" id="password" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition" placeholder="••••••••" required>
-                    <i class="ph ph-lock absolute left-3 top-3.5 text-gray-400 text-lg"></i>
-                </div>
-            </div>
-
-            <button type="submit" id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 shadow-md flex justify-center items-center gap-2">
-                <span>Sign In</span>
-                <i class="ph ph-arrow-right"></i>
-            </button>
-            
-            <div id="loading" class="hidden mt-3 text-center">
-                <div class="inline-block w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-
-            <p id="error-msg" class="text-red-500 text-sm mt-4 text-center hidden bg-red-50 p-2 rounded border border-red-100"></p>
-        </form>
     </div>
 
     <script>
         // CONFIGURATION
-        // PASTE YOUR NEW DEPLOYED URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec"; 
 
         async function handleLogin(e) {
@@ -60,13 +125,17 @@
             const password = document.getElementById('password').value;
             const btn = document.getElementById('login-btn');
             const loader = document.getElementById('loading');
-            const errorMsg = document.getElementById('error-msg');
+            const errorContainer = document.getElementById('error-msg');
+            const errorText = errorContainer.querySelector('.error-text');
 
             // UI State: Loading
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            // We use opacity and pointer-events to disable the button visually and functionally
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
             btn.disabled = true;
+            btn.innerHTML = '<span class="relative z-10">Processing...</span>'; // Change text
+            
             loader.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
+            errorContainer.classList.add('hidden');
 
             try {
                 // Fetch API Call
@@ -78,20 +147,33 @@
                 const result = await response.json();
 
                 if (result.status === "success") {
-                    // Save Session
-                    localStorage.setItem("currentUser", JSON.stringify(result));
-                    // Redirect to Dashboard
-                    window.location.href = "view.html";
+                    // Success Animation before redirect
+                    btn.classList.remove('from-blue-600', 'to-violet-600');
+                    btn.classList.add('bg-green-500', 'hover:bg-green-600');
+                    btn.innerHTML = '<span class="relative z-10 flex items-center justify-center gap-2"><i class="ph-bold ph-check"></i> Success</span>';
+                    
+                    setTimeout(() => {
+                        localStorage.setItem("currentUser", JSON.stringify(result));
+                        window.location.href = "view.html";
+                    }, 800);
                 } else {
                     throw new Error(result.message);
                 }
 
             } catch (error) {
                 // UI State: Error
-                errorMsg.innerText = error.message || "Connection Failed";
-                errorMsg.classList.remove('hidden');
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                errorText.innerText = error.message || "Connection Failed";
+                errorContainer.classList.remove('hidden');
+                
+                // Reset Button
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
                 btn.disabled = false;
+                btn.innerHTML = `
+                    <span class="relative z-10 flex items-center justify-center gap-2">
+                        Try Again
+                        <i class="ph-bold ph-arrow-clockwise"></i>
+                    </span>
+                `;
                 loader.classList.add('hidden');
             }
         }
