@@ -8,62 +8,34 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style> 
-        /* --- THEME SETUP --- */
-        :root {
-            --neu-bg: #eef2f6; /* Neumorphic Base Color */
-            --neu-shadow-light: #ffffff;
-            --neu-shadow-dark: #d1d9e6;
-        }
-
-        body { font-family: 'Inter', sans-serif; background-color: var(--neu-bg); }
+        body { font-family: 'Inter', sans-serif; } 
         
-        /* --- NEUMORPHIC STYLES (For Top Cards Only) --- */
-        .neu-card {
-            background-color: var(--neu-bg);
-            border-radius: 20px;
-            border: none;
-            box-shadow: 9px 9px 16px var(--neu-shadow-dark), 
-                        -9px -9px 16px var(--neu-shadow-light);
-        }
-
-        .neu-inset {
-            background-color: var(--neu-bg);
-            box-shadow: inset 6px 6px 12px var(--neu-shadow-dark), 
-                        inset -6px -6px 12px var(--neu-shadow-light);
-            border-radius: 50px;
-        }
-
-        /* --- CLASSIC FLAT STYLES (For Calendar, Stats, Logs) --- */
-        .flat-card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-        }
-
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
         
+        /* --- VISIBLE CALENDAR CARD STYLE --- */
         .cal-day { 
-            min-height: 80px; 
-            border: 1px solid #e2e8f0; 
+            min-height: 85px; 
+            background: white; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px;
             padding: 6px; 
             font-size: 11px; 
-            background: white;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between;
-            transition: all 0.15s ease-in-out; 
-            border-radius: 6px;
-        }
-        .cal-day:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
-            border-color: #3b82f6; 
-            z-index: 10; 
-            cursor: pointer; 
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.2s ease;
+            position: relative;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
         
-        /* Stats Animation */
+        /* Hover Effect */
+        .cal-day:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); 
+            z-index: 10; 
+            border-color: #3b82f6;
+            cursor: pointer;
+        }
+
+        /* Stats Row Animation */
         .stats-row { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -71,7 +43,7 @@
         select { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem; -webkit-appearance: none; appearance: none; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden text-slate-800">
+<body class="bg-gray-50 flex h-screen overflow-hidden text-slate-800">
 
     <script>
         const currentUserStr = localStorage.getItem("currentUser");
@@ -85,14 +57,14 @@
             </div>
         </div>
         <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
-            <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
+             <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
             <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
             <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
             <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span></a>
-            <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
             <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Summary View</span></a>
             <a href="latelogin.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span></a>
-            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Aproval</span></a>
+            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Approval</span></a>
         </nav>
 
         <div class="p-4 border-t border-gray-800 bg-[#0f172a]">
@@ -111,105 +83,77 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-[#eef2f6]"> 
-        <header class="h-16 bg-[#eef2f6] border-b border-gray-200 flex items-center justify-between px-8 shadow-sm flex-shrink-0 z-20">
-            <h2 class="text-xl font-bold text-gray-700 tracking-tight">Individual View</h2>
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shadow-sm flex-shrink-0">
+            <h2 class="text-xl font-bold text-gray-800">Individual View</h2>
             
             <div class="relative w-80">
-                <select id="userSelect" onchange="loadEmployee(this.value)" class="w-full pl-10 pr-10 py-2.5 border-none neu-inset rounded-xl text-sm bg-[#eef2f6] font-semibold text-gray-700 focus:outline-none cursor-pointer">
+                <select id="userSelect" onchange="loadEmployee(this.value)" class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg text-sm bg-white font-semibold text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer shadow-sm transition">
                     <option value="" disabled selected>-- Select Employee --</option>
                 </select>
-                <i class="ph ph-user absolute left-3 top-3 text-gray-400 text-lg pointer-events-none"></i>
+                <i class="ph ph-user absolute left-3 top-2.5 text-gray-400 text-lg"></i>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-8" id="mainContent">
+        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6" id="mainContent">
             
             <div id="emptyState" class="flex flex-col items-center justify-center h-full text-gray-400 mt-20">
-                <div class="w-20 h-20 neu-card rounded-full flex items-center justify-center mb-4 text-gray-300">
-                    <i class="ph-fill ph-user-focus text-3xl"></i>
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                    <i class="ph ph-user-focus text-3xl text-gray-300"></i>
                 </div>
-                <p class="text-lg font-medium">Please select an employee</p>
+                <p class="text-lg font-medium">Please select an employee to view details</p>
             </div>
 
-            <div id="dataContainer" class="hidden flex-col gap-8">
+            <div id="dataContainer" class="hidden flex-col gap-6">
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="neu-card p-6 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">Zoho Hours</p>
-                                <h3 class="text-3xl font-bold text-gray-700" id="cardZohoHrs">0h 0m</h3>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-gray-400 text-[10px] font-medium uppercase">Target</p>
-                                <p class="text-blue-600 font-bold text-sm">210h</p>
-                            </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Zoho Hours</p><h3 class="text-2xl font-bold text-gray-800" id="cardZohoHrs">0h 0m</h3></div>
+                            <div class="text-right"><p class="text-gray-400 text-[10px] font-bold">Target</p><p class="text-blue-600 font-bold text-sm">210h</p></div>
                         </div>
-                        <div class="w-full neu-inset h-3 rounded-full overflow-hidden">
-                            <div id="targetProgress" class="bg-blue-500 h-full rounded-full transition-all duration-500 shadow-[2px_2px_4px_rgba(0,0,0,0.1)]" style="width: 0%"></div>
-                        </div>
-                        <p class="text-[10px] text-gray-400 text-right mt-2 font-medium" id="targetPercentage">0% Achieved</p>
+                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden"><div id="targetProgress" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                        <p class="text-[10px] text-gray-400 text-right mt-1" id="targetPercentage">0%</p>
                     </div>
 
-                    <div class="neu-card p-6 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-3">
-                            <div>
-                                <p class="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">TL Login Hours</p>
-                                <h3 class="text-3xl font-bold text-gray-700" id="cardTlHrs">0h 0m</h3>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-gray-400 text-[10px] font-medium uppercase">Target (70%)</p>
-                                <p class="text-purple-600 font-bold text-sm">147h</p>
-                            </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <div><p class="text-gray-500 text-xs font-bold uppercase tracking-wider">TL Hours</p><h3 class="text-2xl font-bold text-gray-800" id="cardTlHrs">0h 0m</h3></div>
+                            <div class="text-right"><p class="text-gray-400 text-[10px] font-bold">Target (70%)</p><p class="text-purple-600 font-bold text-sm">147h</p></div>
                         </div>
-                        <div class="w-full neu-inset h-3 rounded-full overflow-hidden">
-                            <div id="targetTlProgress" class="bg-purple-500 h-full rounded-full transition-all duration-500 shadow-[2px_2px_4px_rgba(0,0,0,0.1)]" style="width: 0%"></div>
-                        </div>
-                        <p class="text-[10px] text-gray-400 text-right mt-2 font-medium" id="targetTlPercentage">0% Achieved</p>
+                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden"><div id="targetTlProgress" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div></div>
+                        <p class="text-[10px] text-gray-400 text-right mt-1" id="targetTlPercentage">0%</p>
                     </div>
 
-                    <div class="neu-card p-6 relative overflow-hidden flex flex-col justify-center">
-                        <div class="flex justify-between items-center h-full px-2">
-                            <div class="flex items-center gap-5">
-                                <div class="w-12 h-12 rounded-full neu-inset flex items-center justify-center text-red-500">
-                                    <i class="ph-fill ph-warning-circle text-2xl"></i>
-                                </div>
-                                <div>
-                                    <p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Late Logins</p>
-                                    <h3 class="text-3xl font-bold text-gray-700 mt-1" id="cardLateCount">0</h3>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <p class="text-[10px] text-red-400 font-bold uppercase mb-1">Deduction</p>
-                                <div class="neu-inset px-4 py-2 bg-[#eef2f6]">
-                                    <p class="text-xl font-bold text-red-600 leading-none" id="cardDeduction">0</p>
-                                    <p class="text-[9px] text-gray-400 mt-0.5">Days</p>
-                                </div>
-                            </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500"><i class="ph-fill ph-warning-circle text-xl"></i></div>
+                            <div><p class="text-gray-500 text-xs font-bold uppercase">Late Logins</p><h3 class="text-2xl font-bold text-gray-800" id="cardLateCount">0</h3></div>
+                        </div>
+                        <div class="text-center bg-red-50 px-3 py-1 rounded-lg border border-red-100">
+                            <p class="text-[10px] text-red-400 font-bold uppercase">Deduction</p>
+                            <p class="text-lg font-bold text-red-600 leading-none" id="cardDeduction">0</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <div class="lg:col-span-3 flat-card p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="font-bold text-gray-800 flex items-center gap-2 text-lg">
-                                <i class="ph-fill ph-calendar-blank text-blue-600"></i> <span id="calMonth">Calendar</span>
-                            </h3>
-                            <div class="flex gap-3 text-[10px] flex-wrap">
-                                <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div> P</span>
-                                <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div> A</span>
-                                <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 bg-blue-500 rounded-full"></div> WF</span>
-                                <span class="flex items-center gap-1.5"><div class="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div> CL</span>
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    <div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-gray-800 flex items-center gap-2"><i class="ph ph-calendar-blank text-blue-600"></i> <span id="calMonth">Calendar</span></h3>
+                            <div class="flex gap-2 text-[10px] flex-wrap font-bold text-gray-500">
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-green-500 rounded-full"></div> P</span>
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-red-500 rounded-full"></div> A</span>
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-blue-500 rounded-full"></div> WF</span>
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-yellow-500 rounded-full"></div> CL</span>
                             </div>
                         </div>
                         <div id="calLoader" class="hidden text-center py-10"><div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div></div>
                         <div id="calendarGrid" class="cal-grid"></div>
                     </div>
                     
-                    <div class="flat-card flex flex-col h-fit p-0 overflow-hidden">
-                        <div class="p-4 border-b border-gray-100 bg-gray-50/50 flex flex-col gap-3">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-fit overflow-hidden">
+                        <div class="p-3 border-b border-gray-200 bg-gray-50/50 flex flex-col gap-2">
                             <span class="font-bold text-gray-700 text-sm">Monthly Stats</span>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
@@ -228,37 +172,49 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-0">
-                            <table class="w-full text-sm">
-                                <tbody id="statsBody">
-                                    <tr><td colspan="2" class="p-4 text-center text-gray-400 text-xs">Loading Summary...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="w-full text-sm"><tbody id="statsBody"><tr><td colspan="2" class="p-4 text-center text-gray-400 text-xs">Loading...</td></tr></tbody></table>
                     </div>
                 </div>
 
-                <div class="flat-card mb-10 overflow-hidden">
-                    <div class="p-5 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
-                        <i class="ph-fill ph-list-dashes text-blue-600 text-lg"></i> Activity Logs
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-10">
+                    <div class="p-4 border-b border-gray-200 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="ph ph-list-dashes text-blue-600"></i> Activity Logs
                     </div>
+
+                    <div class="bg-gray-50 border-b border-gray-200 p-3 grid grid-cols-2 gap-4">
+                        <div class="flex justify-around items-center bg-white border border-blue-100 rounded-lg p-2 shadow-sm">
+                            <div class="text-center"><p class="text-[9px] font-bold text-blue-500 uppercase">Avg In</p><p class="text-xs font-bold text-gray-700" id="summ-z-in">-</p></div>
+                            <div class="h-6 w-px bg-gray-200"></div>
+                            <div class="text-center"><p class="text-[9px] font-bold text-blue-500 uppercase">Avg Out</p><p class="text-xs font-bold text-gray-700" id="summ-z-out">-</p></div>
+                            <div class="h-6 w-px bg-gray-200"></div>
+                            <div class="text-center"><p class="text-[9px] font-bold text-blue-500 uppercase">Total Hrs</p><p class="text-sm font-bold text-blue-700" id="summ-z-hrs">-</p></div>
+                        </div>
+                        <div class="flex justify-around items-center bg-white border border-purple-100 rounded-lg p-2 shadow-sm">
+                            <div class="text-center"><p class="text-[9px] font-bold text-purple-500 uppercase">Avg In</p><p class="text-xs font-bold text-gray-700" id="summ-t-in">-</p></div>
+                            <div class="h-6 w-px bg-gray-200"></div>
+                            <div class="text-center"><p class="text-[9px] font-bold text-purple-500 uppercase">Avg Out</p><p class="text-xs font-bold text-gray-700" id="summ-t-out">-</p></div>
+                            <div class="h-6 w-px bg-gray-200"></div>
+                            <div class="text-center"><p class="text-[9px] font-bold text-purple-500 uppercase">Total</p><p class="text-sm font-bold text-purple-700" id="summ-t-tot">-</p></div>
+                        </div>
+                    </div>
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-100 border-b">
                                 <tr>
-                                    <th rowspan="2" class="px-3 py-3 border-r border-gray-200">Date</th>
-                                    <th colspan="5" class="text-center border-r border-gray-200 text-blue-700 bg-blue-50/50">Zoho Attendance</th>
-                                    <th colspan="3" class="text-center border-r border-gray-200 text-purple-700 bg-purple-50/50">TL Data</th>
-                                    <th colspan="6" class="text-center border-r border-gray-200 text-orange-700 bg-orange-50/50">Regularization</th>
-                                    <th rowspan="2" class="px-3 py-3 text-center">Action</th>
+                                    <th rowspan="2" class="px-2 py-3 border-r bg-gray-50">Date</th>
+                                    <th colspan="5" class="text-center border-r bg-blue-50 text-blue-700">Zoho Attendance</th>
+                                    <th colspan="3" class="text-center border-r bg-purple-50 text-purple-700">TL Data</th>
+                                    <th colspan="6" class="text-center border-r bg-orange-50 text-orange-700">Regularization</th>
+                                    <th rowspan="2" class="px-2 py-3 text-center bg-gray-50">Action</th>
                                 </tr>
-                                <tr class="text-[10px]">
+                                <tr class="text-[10px] bg-gray-50">
                                     <th class="px-1 border-r text-center">In</th><th class="px-1 border-r text-center">Out</th><th class="px-1 border-r text-center">Hrs</th><th class="px-1 border-r text-center">Att</th><th class="px-1 border-r text-center">Log St</th>
                                     <th class="px-1 border-r text-center text-purple-600">In</th><th class="px-1 border-r text-center text-purple-600">Out</th><th class="px-1 border-r text-center text-purple-600">Tot</th>
                                     <th class="px-1 border-r text-center text-orange-600">N-In</th><th class="px-1 border-r text-center text-orange-600">N-Out</th><th class="px-1 border-r text-center text-orange-600">O-Hr</th><th class="px-1 border-r text-center text-orange-600">N-Hr</th><th class="px-1 border-r text-center text-orange-600">O-St</th><th class="px-1 border-r text-center text-orange-600">N-St</th>
                                 </tr>
                             </thead>
-                            <tbody id="logsBody" class="divide-y divide-gray-100"></tbody>
+                            <tbody id="logsBody" class="divide-y divide-gray-200"></tbody>
                         </table>
                     </div>
                 </div>
@@ -266,68 +222,37 @@
         </div>
     </main>
 
-    <div id="modal-edit" class="fixed inset-0 bg-[#eef2f6]/80 hidden z-[90] flex items-center justify-center backdrop-blur-sm">
-        <div class="neu-card w-full max-w-sm p-0 overflow-hidden">
-            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center"><h3 class="text-white font-bold">Edit Record</h3><button onclick="closeModal('modal-edit')" class="text-white"><i class="ph-bold ph-x"></i></button></div>
+    <div id="modal-edit" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[90] flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm border border-gray-200">
+            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center"><h3 class="text-white font-bold">Edit Record</h3><button onclick="closeModal('modal-edit')" class="text-white"><i class="ph ph-x"></i></button></div>
             <div class="p-6 space-y-4">
-                <div class="bg-blue-50 p-2 rounded-lg text-sm font-bold text-gray-800 text-center border border-blue-100" id="edit-date">-</div>
-                <select id="edit-status" class="w-full neu-inset bg-[#eef2f6] px-4 py-2"><option value="P">P</option><option value="A">A</option><option value="WF">WF</option><option value="HD">HD</option><option value="LWP">LWP</option><option value="CL">CL</option></select>
-                <input type="text" id="edit-login-st" class="w-full neu-inset bg-[#eef2f6] px-4 py-2" placeholder="Login Status">
-                <textarea id="edit-remark" class="w-full neu-inset bg-[#eef2f6] px-4 py-2" placeholder="Remark"></textarea>
+                <div class="bg-blue-50 p-2 rounded text-sm font-bold text-gray-800" id="edit-date">-</div>
+                <select id="edit-status" class="w-full border p-2 rounded"><option value="P">P</option><option value="A">A</option><option value="WF">WF</option><option value="HD">HD</option><option value="LWP">LWP</option><option value="CL">CL</option></select>
+                <input type="text" id="edit-login-st" class="w-full border p-2 rounded" placeholder="Login Status">
+                <textarea id="edit-remark" class="w-full border p-2 rounded" placeholder="Remark"></textarea>
             </div>
-            <div class="bg-gray-100/50 px-6 py-4 flex justify-end gap-2"><button onclick="closeModal('modal-edit')" class="text-gray-600 text-sm font-bold mr-2">Cancel</button><button onclick="submitEdit()" id="btn-save" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-sm shadow-md">Update</button></div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end gap-2"><button onclick="closeModal('modal-edit')" class="text-gray-600 text-sm">Cancel</button><button onclick="submitEdit()" id="btn-save" class="bg-blue-600 text-white px-4 py-2 rounded font-bold text-sm">Update</button></div>
         </div>
     </div>
 
-    <div id="modal-late" class="fixed inset-0 bg-[#eef2f6]/80 hidden z-[90] flex items-center justify-center backdrop-blur-sm">
-        <div class="neu-card w-full max-w-sm p-6 text-center border-t-4 border-orange-400">
+    <div id="modal-late" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[90] flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center border border-orange-200">
             <h3 class="font-bold text-lg text-gray-800">Late Login Action</h3>
             <p class="text-sm text-gray-500 mb-4 font-mono" id="late-date"></p>
-            <div class="flex gap-4 justify-center">
-                <button onclick="processLogin('Rejected')" class="neu-card text-red-600 hover:text-red-700 px-6 py-2 rounded-xl font-bold text-sm active:shadow-inner">Reject</button>
-                <button onclick="processLogin('On Time')" class="neu-card text-green-600 hover:text-green-700 px-6 py-2 rounded-xl font-bold text-sm active:shadow-inner">Approve</button>
-            </div>
-            <button onclick="closeModal('modal-late')" class="mt-4 text-xs font-bold text-gray-400 underline">Cancel</button>
+            <div class="flex gap-3 justify-center"><button onclick="processLogin('Rejected')" class="text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg font-bold border border-red-200">Reject</button><button onclick="processLogin('On Time')" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg font-bold">Approve</button></div>
+            <button onclick="closeModal('modal-late')" class="mt-4 text-xs underline text-gray-400">Cancel</button>
         </div>
     </div>
 
-    <div id="modal-day-detail" class="fixed inset-0 bg-[#eef2f6]/80 hidden z-[80] flex items-center justify-center backdrop-blur-sm">
-        <div class="neu-card w-full max-w-md p-0 overflow-hidden">
-            <div class="bg-gray-800 px-6 py-4 flex justify-between items-center">
-                <h3 class="text-white font-bold flex items-center gap-2"><i class="ph ph-calendar-check"></i> <span id="dd-date">Date</span></h3>
-                <button onclick="closeModal('modal-day-detail')" class="text-gray-400 hover:text-white"><i class="ph-bold ph-x text-xl"></i></button>
-            </div>
+    <div id="modal-day-detail" class="fixed inset-0 bg-black bg-opacity-60 hidden z-[80] flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md border border-gray-200 overflow-hidden">
+            <div class="bg-gray-900 px-6 py-4 flex justify-between items-center"><h3 class="text-white font-bold flex items-center gap-2"><i class="ph ph-calendar-check"></i> <span id="dd-date">Date</span></h3><button onclick="closeModal('modal-day-detail')" class="text-gray-400 hover:text-white"><i class="ph ph-x text-xl"></i></button></div>
             <div class="p-6 space-y-4">
-                <div class="bg-blue-50 rounded-xl p-3 border border-blue-100">
-                    <h4 class="text-xs font-bold text-blue-800 uppercase mb-2 border-b border-blue-200 pb-1">Zoho Attendance</h4>
-                    <div class="grid grid-cols-3 gap-2 text-sm text-center">
-                        <div><p class="text-gray-500 text-[10px]">First In</p><p class="font-bold text-gray-800" id="dd-z-in">-</p></div>
-                        <div><p class="text-gray-500 text-[10px]">Last Out</p><p class="font-bold text-gray-800" id="dd-z-out">-</p></div>
-                        <div><p class="text-gray-500 text-[10px]">Total Hrs</p><p class="font-bold text-blue-600" id="dd-z-hrs">-</p></div>
-                    </div>
-                    <div class="mt-2 flex justify-between items-center text-xs">
-                        <span id="dd-z-status" class="px-2 py-1 rounded font-bold">-</span>
-                        <span id="dd-z-login" class="text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">-</span>
-                    </div>
-                </div>
-                <div class="bg-purple-50 rounded-xl p-3 border border-purple-100">
-                    <h4 class="text-xs font-bold text-purple-800 uppercase mb-2 border-b border-purple-200 pb-1">TL Data</h4>
-                    <div class="grid grid-cols-3 gap-2 text-sm text-center">
-                        <div><p class="text-gray-500 text-[10px]">In Time</p><p class="font-bold text-gray-800" id="dd-t-in">-</p></div>
-                        <div><p class="text-gray-500 text-[10px]">Out Time</p><p class="font-bold text-gray-800" id="dd-t-out">-</p></div>
-                        <div><p class="text-gray-500 text-[10px]">Total</p><p class="font-bold text-purple-600" id="dd-t-total">-</p></div>
-                    </div>
-                </div>
-                <div id="dd-reg-box" class="bg-orange-50 rounded-xl p-3 border border-orange-100 hidden">
-                    <h4 class="text-xs font-bold text-orange-800 uppercase mb-1 border-b border-orange-200 pb-1">Regularization</h4>
-                    <p class="text-xs text-gray-700 mt-1" id="dd-reg-info">-</p>
-                </div>
+                <div class="bg-blue-50 rounded-lg p-3 border border-blue-100"><h4 class="text-xs font-bold text-blue-800 uppercase mb-2 border-b border-blue-200 pb-1">Zoho Attendance</h4><div class="grid grid-cols-3 gap-2 text-sm text-center"><div><p class="text-gray-500 text-[10px]">First In</p><p class="font-bold text-gray-800" id="dd-z-in">-</p></div><div><p class="text-gray-500 text-[10px]">Last Out</p><p class="font-bold text-gray-800" id="dd-z-out">-</p></div><div><p class="text-gray-500 text-[10px]">Total Hrs</p><p class="font-bold text-blue-600" id="dd-z-hrs">-</p></div></div><div class="mt-2 flex justify-between items-center text-xs"><span id="dd-z-status" class="px-2 py-1 rounded font-bold">-</span><span id="dd-z-login" class="text-gray-600 bg-white px-2 py-1 rounded border border-gray-200">-</span></div></div>
+                <div class="bg-purple-50 rounded-lg p-3 border border-purple-100"><h4 class="text-xs font-bold text-purple-800 uppercase mb-2 border-b border-purple-200 pb-1">TL Data</h4><div class="grid grid-cols-3 gap-2 text-sm text-center"><div><p class="text-gray-500 text-[10px]">In Time</p><p class="font-bold text-gray-800" id="dd-t-in">-</p></div><div><p class="text-gray-500 text-[10px]">Out Time</p><p class="font-bold text-gray-800" id="dd-t-out">-</p></div><div><p class="text-gray-500 text-[10px]">Total</p><p class="font-bold text-purple-600" id="dd-t-total">-</p></div></div></div>
+                <div id="dd-reg-box" class="bg-orange-50 rounded-lg p-3 border border-orange-100 hidden"><h4 class="text-xs font-bold text-orange-800 uppercase mb-1 border-b border-orange-200 pb-1">Regularization</h4><p class="text-xs text-gray-700 mt-1" id="dd-reg-info">-</p></div>
             </div>
-            <div class="bg-gray-50 px-6 py-4 flex justify-end">
-                <button id="dd-edit-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition shadow-sm">
-                    <i class="ph-bold ph-pencil-simple"></i> Edit Record
-                </button>
-            </div>
+            <div class="bg-gray-50 px-6 py-4 flex justify-end"><button id="dd-edit-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition shadow-sm"><i class="ph ph-pencil-simple"></i> Edit Record</button></div>
         </div>
     </div>
 
@@ -336,11 +261,8 @@
         
         let currentId = null; let lateDate = null; let currentUser = null;
         let currentLogs = []; 
-        let cachedSummaryHeaders = [];
-        let cachedSummaryRow = [];
-        
-        const TARGET_HOURS = 210 * 60; 
-        const TL_TARGET_HOURS = TARGET_HOURS * 0.7; 
+        let cachedSummaryHeaders = []; let cachedSummaryRow = [];
+        const TARGET_HOURS = 210 * 60; const TL_TARGET_HOURS = TARGET_HOURS * 0.7; 
 
         function logout() { localStorage.removeItem("currentUser"); window.location.href = "index.html"; }
 
@@ -358,10 +280,7 @@
                     populateDropdown(json.data);
                     const urlParams = new URLSearchParams(window.location.search);
                     const idFromUrl = urlParams.get('id');
-                    if(idFromUrl) {
-                        document.getElementById('userSelect').value = idFromUrl;
-                        loadEmployee(idFromUrl);
-                    }
+                    if(idFromUrl) { document.getElementById('userSelect').value = idFromUrl; loadEmployee(idFromUrl); }
                 }
             } catch(e){ console.error(e); }
         }
@@ -370,10 +289,7 @@
             const s = document.getElementById('userSelect');
             s.innerHTML = '<option value="" disabled selected>-- Select Employee --</option>';
             [...data].sort((a,b)=>a.name.localeCompare(b.name)).forEach(e => {
-                const opt = document.createElement('option');
-                opt.value = e.id;
-                opt.innerText = e.name;
-                s.appendChild(opt);
+                const opt = document.createElement('option'); opt.value = e.id; opt.innerText = e.name; s.appendChild(opt);
             });
         }
 
@@ -393,6 +309,7 @@
                 const json = await res.json();
                 if(json.status === "success") {
                     currentLogs = json.logs; 
+                    calculateTableSummary(json.logs);
                     renderLogs(json.logs);
                     renderCalendar(json.logs);
                     
@@ -405,20 +322,19 @@
                     const percentage = Math.min((totalZMinutes / TARGET_HOURS) * 100, 100).toFixed(1);
                     document.getElementById('targetProgress').style.width = `${percentage}%`;
                     document.getElementById('targetPercentage').innerText = `${percentage}% Achieved`;
-                    document.getElementById('targetProgress').className = `h-full rounded-full transition-all duration-500 shadow-[2px_2px_4px_rgba(0,0,0,0.1)] ${percentage >= 100 ? 'bg-green-500' : 'bg-blue-500'}`;
+                    document.getElementById('targetProgress').className = `h-full rounded-full transition-all duration-500 ${percentage >= 100 ? 'bg-green-500' : 'bg-blue-500'}`;
 
                     document.getElementById('cardTlHrs').innerText = minsToTime(totalTMinutes);
                     const tlPercentage = Math.min((totalTMinutes / TL_TARGET_HOURS) * 100, 100).toFixed(1);
                     document.getElementById('targetTlProgress').style.width = `${tlPercentage}%`;
                     document.getElementById('targetTlPercentage').innerText = `${tlPercentage}% Achieved`;
-                    document.getElementById('targetTlProgress').className = `h-full rounded-full transition-all duration-500 shadow-[2px_2px_4px_rgba(0,0,0,0.1)] ${tlPercentage >= 100 ? 'bg-green-500' : 'bg-purple-500'}`;
+                    document.getElementById('targetTlProgress').className = `h-full rounded-full transition-all duration-500 ${tlPercentage >= 100 ? 'bg-green-500' : 'bg-purple-500'}`;
 
                     let lateCount = 0;
                     json.logs.forEach(l => {
                         let status = l.zoho.loginStatus || "";
                         if(status.toLowerCase().includes("late")) lateCount++;
                     });
-                    
                     let deduction = 0;
                     if(lateCount > 2) deduction = (lateCount - 2) * 0.5;
                     document.getElementById('cardLateCount').innerText = lateCount;
@@ -427,6 +343,50 @@
             } catch(e) {} 
             fetchSummaryStats(id);
             document.getElementById('calLoader').classList.add('hidden');
+        }
+
+        function calculateTableSummary(logs) {
+            let zInMins = 0, zInCount = 0;
+            let zOutMins = 0, zOutCount = 0;
+            let tInMins = 0, tInCount = 0;
+            let tOutMins = 0, tOutCount = 0;
+            
+            logs.forEach(l => {
+                if(l.zoho.firstIn && l.zoho.firstIn !== '-' && l.zoho.firstIn.includes(':')) { zInMins += timeToMins(l.zoho.firstIn); zInCount++; }
+                if(l.zoho.lastOut && l.zoho.lastOut !== '-' && l.zoho.lastOut.includes(':')) { zOutMins += timeToMins(l.zoho.lastOut); zOutCount++; }
+                let t = l.tl || {};
+                if(t.inTime && t.inTime !== '-' && t.inTime.includes(':')) { tInMins += timeToMins(t.inTime); tInCount++; }
+                if(t.outTime && t.outTime !== '-' && t.outTime.includes(':')) { tOutMins += timeToMins(t.outTime); tOutCount++; }
+            });
+
+            document.getElementById('summ-z-in').innerText = zInCount ? minsToTimeStr(zInMins/zInCount) : '-';
+            document.getElementById('summ-z-out').innerText = zOutCount ? minsToTimeStr(zOutMins/zOutCount) : '-';
+            const zTotal = calculateTotalMinutes(logs.map(l=>l.zoho.totalHrs));
+            const tTotal = calculateTotalMinutes(logs.map(l=>l.tl?.totalLogin));
+            document.getElementById('summ-z-hrs').innerText = minsToTime(zTotal);
+            document.getElementById('summ-t-in').innerText = tInCount ? minsToTimeStr(tInMins/tInCount) : '-';
+            document.getElementById('summ-t-out').innerText = tOutCount ? minsToTimeStr(tOutMins/tOutCount) : '-';
+            document.getElementById('summ-t-tot').innerText = minsToTime(tTotal);
+        }
+
+        function timeToMins(timeStr) {
+            if(!timeStr) return 0;
+            let parts = timeStr.match(/(\d+):(\d+)\s?(AM|PM)?/i);
+            if(!parts) return 0;
+            let h = parseInt(parts[1]);
+            let m = parseInt(parts[2]);
+            let ampm = parts[3] ? parts[3].toUpperCase() : null;
+            if(ampm === 'PM' && h < 12) h += 12;
+            if(ampm === 'AM' && h === 12) h = 0;
+            return h*60 + m;
+        }
+
+        function minsToTimeStr(mins) {
+            let h = Math.floor(mins/60);
+            let m = Math.floor(mins%60);
+            let ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12; h = h ? h : 12;
+            return `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
         }
 
         async function fetchSummaryStats(empId) {
@@ -447,13 +407,13 @@
         function renderCachedSummary() {
             const tbody = document.getElementById('statsBody');
             tbody.innerHTML = '';
-            const showDetails = document.getElementById('toggleDetails').checked;
-            const showZeros = document.getElementById('toggleZero').checked;
             if(!cachedSummaryHeaders || !cachedSummaryRow) return;
-
             let idxPayable = cachedSummaryHeaders.indexOf("Payable Days");
             let idxLeave = cachedSummaryHeaders.indexOf("Leave");
             if(idxPayable === -1) idxPayable = 2; if(idxLeave === -1) idxLeave = 8; 
+            
+            const showDetails = document.getElementById('toggleDetails').checked;
+            const showZeros = document.getElementById('toggleZero').checked;
 
             let defaultRows = "";
             let detailedRows = "";
@@ -471,23 +431,15 @@
 
                 let valStyle = "text-gray-700";
                 let labelStyle = "text-gray-500";
-                
-                // Highlight Payable Days - Classic Style
-                if(header === 'Payable Days') { 
-                    valStyle = "text-blue-700 font-bold bg-blue-50 px-2 py-0.5 rounded"; 
-                    labelStyle = "text-blue-700 font-bold";
-                }
+                if(header === 'Payable Days') { valStyle = "text-blue-700 font-bold bg-blue-50 px-2 py-0.5 rounded"; labelStyle = "text-blue-700 font-bold"; }
                 else if(header === 'Present') valStyle = "text-green-700 font-bold";
                 else if(header === 'Absent') valStyle = "text-red-700 font-bold";
                 else if(header === 'Leave') valStyle = "text-yellow-700 font-bold";
-                else if(header === 'Week Off' || header === 'Holiday') valStyle = "text-gray-500 italic";
-
+                
                 const rowHTML = `<tr class="stats-row hover:bg-gray-50 transition"><td class="p-2 ${labelStyle} border-b border-gray-100 text-xs font-medium">${header}</td><td class="p-2 ${valStyle} border-b border-gray-100 text-right text-xs">${val}</td></tr>`;
                 if(isDefaultCol) defaultRows += rowHTML; else { detailedRows += rowHTML; hasDetails = true; }
             }
-
             tbody.innerHTML = defaultRows;
-            // Divider for Breakdown
             if(hasDetails) {
                 tbody.innerHTML += `<tr><td colspan="2" class="px-2 py-1 bg-gray-100 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-center border-y border-gray-200">Breakdown</td></tr>`;
                 tbody.innerHTML += detailedRows;
@@ -507,6 +459,17 @@
             return 'bg-gray-100 text-gray-600';
         }
 
+        function getCardColor(s) {
+            s = (s || '').toUpperCase().trim();
+            if(s === 'P' || s === 'PRESENT') return 'border-l-4 border-green-500 bg-green-50/20';
+            if(s === 'A' || s === 'ABSENT') return 'border-l-4 border-red-500 bg-red-50/20';
+            if(s.includes('WF')) return 'border-l-4 border-blue-500 bg-blue-50/20';
+            if(s === 'CL' || s === 'SL' || s === 'EL') return 'border-l-4 border-yellow-500 bg-yellow-50/20';
+            if(s === 'HD' || s === 'HALF DAY') return 'border-l-4 border-purple-500 bg-purple-50/20';
+            if(s === 'LWP') return 'border-l-4 border-pink-500 bg-pink-50/20';
+            return 'bg-white border-l-4 border-gray-300';
+        }
+
         function renderLogs(logs) {
             const tbody = document.getElementById('logsBody'); tbody.innerHTML = '';
             [...logs].reverse().forEach(log => {
@@ -515,15 +478,12 @@
                 const stStyle = getStyle(z.finalAtt);
                 let lgSt = safe(z.loginStatus);
                 let lgCls = "text-gray-500"; let lgAct = "";
-                
                 if(lgSt.toLowerCase().includes('late')){ lgCls="text-red-600 bg-red-50 font-bold cursor-pointer rounded px-1 border border-red-200"; lgAct=`onclick="openLate('${log.date}')"`; }
                 else if(lgSt.toLowerCase().includes('time')){ lgCls="text-green-600 bg-green-50 font-bold rounded px-1 border border-green-200"; }
-                
                 let regHtml = safe(r.newSts);
                 if(r.apprStatus==='Pending' && r.rowIndex) {
                     regHtml = `<div class="flex gap-1 justify-center"><button onclick="approveReg('${r.rowIndex}','Approved','${log.date}')" class="text-green-600 hover:bg-green-100 p-1 rounded"><i class="ph-bold ph-check"></i></button><button onclick="approveReg('${r.rowIndex}','Rejected','${log.date}')" class="text-red-600 hover:bg-red-100 p-1 rounded"><i class="ph-bold ph-x"></i></button></div>`;
                 } else if(r.apprStatus) { regHtml = `<span class="font-bold text-[10px] ${r.apprStatus==='Approved'?'text-green-600':'text-red-600'}">${r.apprStatus}</span>`; }
-
                 tbody.innerHTML += `
                 <tr class="hover:bg-gray-50 border-b text-xs transition">
                     <td class="px-2 py-3 font-bold whitespace-nowrap border-r text-gray-700">${log.date}</td>
@@ -535,59 +495,61 @@
             });
         }
 
+        // --- RENDER CALENDAR ---
         function renderCalendar(logs) {
             const grid = document.getElementById('calendarGrid'); 
             const old=grid.querySelectorAll('.cal-day');old.forEach(o=>o.remove());
             if(logs.length===0) return;
-            
             const p=logs[0].date.split('/'); const m=parseInt(p[1])-1; const y=parseInt(p[2]);
             document.getElementById('calMonth').innerText=new Date(y,m,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
             const start=new Date(y,m,1).getDay(); const days=new Date(y,m+1,0).getDate();
             for(let i=0;i<start;i++) grid.innerHTML += `<div class="cal-day opacity-0 pointer-events-none" style="border:none;background:transparent;box-shadow:none;"></div>`;
-            
             const safe = (v) => (v && v!=='undefined' && v!=='-') ? v : null;
             const shortTime = (t) => t ? t.replace(' AM','A').replace(' PM','P') : '-';
-
             for(let d=1;d<=days;d++){
                 const ds=`${String(d).padStart(2,'0')}/${String(m+1).padStart(2,'0')}/${y}`; 
                 const l=logs.find(x=>x.date===ds);
                 let z = l ? l.zoho : {};
                 
-                // FLAT STYLE CALENDAR
-                let bg="bg-white", bdr="border-gray-200", lbl="", cls="hidden";
-                if(z.finalAtt){ 
-                    const st=getStyle(z.finalAtt); 
-                    bg=st.replace('text','bg').replace('700','50').split(' ')[0]; 
-                    if(st.includes('bg-')) bg=st.split(' ')[0]; 
-                    bdr=bg.replace('bg-','border-').replace('50','200').replace('100','200'); 
-                    cls=st; lbl=z.finalAtt; 
+                let cardClass = getCardColor(z.finalAtt);
+                let lbl = z.finalAtt || "";
+                let lblClass = "hidden";
+                
+                if (lbl) {
+                    if(lbl==='P' || lbl==='Present') lblClass = 'text-green-700 bg-green-100/80';
+                    else if(lbl==='A' || lbl==='Absent') lblClass = 'text-red-700 bg-red-100/80';
+                    else if(lbl.includes('WF')) lblClass = 'text-blue-700 bg-blue-100/80';
+                    else lblClass = 'text-gray-700 bg-gray-100';
+                }
+
+                // Check for Reg / Late Icons
+                let regIcon = '';
+                if (l && l.reg) {
+                    regIcon = `<div class="text-orange-500 bg-orange-50/80 p-0.5 rounded shadow-sm" title="Regularization Request"><i class="ph-bold ph-file-text"></i></div>`;
+                }
+                
+                let lateIcon = '';
+                if (l && l.zoho && l.zoho.loginStatus && l.zoho.loginStatus.toLowerCase().includes('late')) {
+                    lateIcon = `<div class="text-red-500 bg-red-50/80 p-0.5 rounded shadow-sm" title="Late Login"><i class="ph-bold ph-clock-countdown"></i></div>`;
                 }
 
                 let detailsHTML = '';
                 if(l && z.firstIn && z.firstIn !== '-') {
                     let logSt = safe(z.loginStatus) || '';
-                    let logStColor = logSt.includes('Late') ? 'text-red-500' : (logSt.includes('Time') ? 'text-green-600' : 'text-gray-400');
-                    let logStText = logSt.includes('Late') ? 'Late' : (logSt.includes('Time') ? 'OnTime' : '');
-
-                    detailsHTML = `
-                        <div class="mt-1 flex flex-col gap-0.5">
-                            <div class="flex justify-between text-[9px] text-gray-500 leading-none">
-                                <span>${shortTime(z.firstIn)}</span>
-                                <span>${shortTime(z.lastOut)}</span>
-                            </div>
-                            <div class="flex justify-between items-end text-[9px] leading-none mt-1">
-                                <span class="font-bold text-slate-700">${safe(z.totalHrs) || '-'}</span>
-                                <span class="${logStColor} font-bold text-[8px] uppercase tracking-tighter">${logStText}</span>
-                            </div>
-                        </div>
-                    `;
+                    let logStColor = logSt.includes('Late') ? 'text-red-600' : (logSt.includes('Time') ? 'text-green-600' : 'text-gray-400');
+                    let logStText = logSt.includes('Late') ? 'LATE' : (logSt.includes('Time') ? 'ON TIME' : '');
+                    detailsHTML = `<div class="mt-2 flex flex-col gap-1 border-t border-gray-200/50 pt-1"><div class="flex justify-between text-[9px] text-gray-500 font-semibold leading-none"><span>${shortTime(z.firstIn)}</span><span>${shortTime(z.lastOut)}</span></div><div class="flex justify-between items-end text-[9px] leading-none mt-1"><span class="font-extrabold text-gray-800">${safe(z.totalHrs) || '-'}</span><span class="${logStColor} font-bold text-[8px] tracking-wide uppercase">${logStText}</span></div></div>`;
                 }
-
+                
                 grid.innerHTML += `
-                <div class="cal-day ${bg} border ${bdr} relative group" onclick="openDayDetails('${ds}')">
+                <div class="cal-day ${cardClass} group" onclick="openDayDetails('${ds}')">
                     <div class="flex justify-between items-start">
-                        <span class="font-bold text-gray-700 text-xs">${d}</span>
-                        ${lbl ? `<div class="${cls} text-[9px] font-bold text-center rounded px-1">${lbl}</div>` : ''}
+                        <span class="font-bold text-gray-700 text-sm">${d}</span>
+                        <div class="flex gap-1 items-center">
+                            ${regIcon}
+                            ${lateIcon}
+                            ${lbl ? `<div class="${lblClass} text-[9px] font-bold rounded px-1.5 py-0.5 border border-black/5">${lbl}</div>` : ''}
+                        </div>
                     </div>
                     ${detailsHTML}
                 </div>`;
@@ -599,7 +561,7 @@
             if(!log) {
                 document.getElementById('dd-date').innerText = dateStr;
                 document.getElementById('dd-z-in').innerText = '-'; document.getElementById('dd-z-out').innerText = '-'; document.getElementById('dd-z-hrs').innerText = '-';
-                document.getElementById('dd-z-status').innerText = 'No Data'; document.getElementById('dd-z-status').className = 'px-2 py-1 rounded font-bold bg-gray-200 text-gray-500';
+                document.getElementById('dd-z-status').innerText = 'No Data'; document.getElementById('dd-z-status').className = 'px-3 py-1 rounded-full font-bold bg-gray-200 text-gray-500';
                 document.getElementById('dd-z-login').innerText = '-';
                 document.getElementById('dd-t-in').innerText = '-'; document.getElementById('dd-t-out').innerText = '-'; document.getElementById('dd-t-total').innerText = '-';
                 document.getElementById('dd-reg-box').classList.add('hidden');
@@ -607,29 +569,20 @@
             } else {
                 const z = log.zoho; const t = log.tl || {}; const r = log.reg;
                 const safe = (v) => (v && v!=='undefined')?v:'-';
-                
                 document.getElementById('dd-date').innerText = dateStr;
                 document.getElementById('dd-z-in').innerText = safe(z.firstIn);
                 document.getElementById('dd-z-out').innerText = safe(z.lastOut);
                 document.getElementById('dd-z-hrs').innerText = safe(z.totalHrs);
-                
                 const stStyle = getStyle(z.finalAtt);
                 const stSpan = document.getElementById('dd-z-status');
-                stSpan.innerText = safe(z.finalAtt); 
-                stSpan.className = `${stStyle} px-2 py-1 rounded font-bold`; 
+                stSpan.innerText = safe(z.finalAtt); stSpan.className = `${stStyle} px-3 py-1 rounded-full font-bold`; 
                 document.getElementById('dd-z-login').innerText = safe(z.loginStatus);
-
                 document.getElementById('dd-t-in').innerText = safe(t.inTime);
                 document.getElementById('dd-t-out').innerText = safe(t.outTime);
                 document.getElementById('dd-t-total').innerText = safe(t.totalLogin);
-
                 const regBox = document.getElementById('dd-reg-box');
-                if(r) {
-                    regBox.classList.remove('hidden');
-                    document.getElementById('dd-reg-info').innerHTML = `<b>Status:</b> ${safe(r.apprStatus)} <br> <b>Change:</b> ${safe(r.oldSts)} -> ${safe(r.newSts)} <br> <b>Hours:</b> ${safe(r.oldHrs)} -> ${safe(r.newHrs)}`;
-                } else {
-                    regBox.classList.add('hidden');
-                }
+                if(r) { regBox.classList.remove('hidden'); document.getElementById('dd-reg-info').innerHTML = `<b>Status:</b> ${safe(r.apprStatus)} <br> <b>Change:</b> ${safe(r.oldSts)} -> ${safe(r.newSts)} <br> <b>Hours:</b> ${safe(r.oldHrs)} -> ${safe(r.newHrs)}`; } 
+                else { regBox.classList.add('hidden'); }
                 document.getElementById('dd-edit-btn').onclick = function() { closeModal('modal-day-detail'); openEdit(dateStr, safe(z.finalAtt), safe(z.loginStatus)); };
             }
             document.getElementById('modal-day-detail').classList.remove('hidden');
