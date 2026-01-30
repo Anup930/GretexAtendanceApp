@@ -19,19 +19,18 @@
     <aside class="w-64 bg-[#0f172a] text-gray-300 flex flex-col flex-shrink-0">
         <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-[#0f172a]">
             <div class="flex items-center gap-2 text-white font-bold text-lg tracking-wide">
-                <i class="ph-fill ph-squares-four text-blue-500 text-xl"></i>
-                <span>ATTENDO HUB</span>
+                <i class="ph-fill ph-squares-four text-blue-500 text-xl"></i><span>ATTENDO HUB</span>
             </div>
         </div>
-       <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
-            <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
-            <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 text-white rounded-lg shadow-md transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
-            <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 text-white rounded-lg shadow-md transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
-            <a href="compoff.html" class="flex items-center gap-3 px-3 py-2.5  bg-blue-600 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span></a>
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+             <a href="view.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-house text-lg"></i><span class="font-medium">Dashboard</span></a>
+            <a href="attendance.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Attendance Report</span></a>
+            <a href="Regularization.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-check-circle text-lg"></i><span class="font-medium">Regularization</span></a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-blue-600 text-white rounded-lg shadow-md transition"><i class="ph ph-calendar-plus text-lg"></i><span class="font-medium">Comp-Off</span></a>
             <a href="indivisual.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-user text-lg"></i><span class="font-medium">Individual View</span></a>
             <a href="summary.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-table text-lg"></i><span class="font-medium">Summary View</span></a>
             <a href="latelogin.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-clock-countdown text-lg"></i><span class="font-medium">Late Login</span></a>
-            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Aproval</span></a>
+            <a href="salaryapproval.html" class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-800 hover:text-white rounded-lg transition"><i class="ph ph-currency-circle-dollar text-lg"></i><span class="font-medium">Salary Approval</span></a>
         </nav>
 
         <div class="p-4 border-t border-gray-800 bg-[#0f172a]">
@@ -43,9 +42,7 @@
                         <p class="text-xs text-gray-400" id="sidebarUserRole">...</p>
                     </div>
                 </div>
-                <button onclick="logout()" class="text-gray-400 hover:text-white" title="Sign Out">
-                    <i class="ph ph-sign-out text-xl"></i>
-                </button>
+                <button onclick="logout()" class="text-gray-400 hover:text-white" title="Sign Out"><i class="ph ph-sign-out text-xl"></i></button>
             </div>
         </div>
     </aside>
@@ -72,21 +69,21 @@
                         <button onclick="filterTab('All')" id="tab-all" class="pb-3 text-sm font-semibold text-gray-500 hover:text-gray-700 transition">All History</button>
                     </div>
                     <div class="relative w-72 mb-2">
-                        <select id="employeeFilter" onchange="renderTable()" class="w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer appearance-none font-medium text-gray-700">
+                        <select id="employeeFilter" onchange="renderTable()" class="w-full pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer font-medium text-gray-700">
                             <option value="all">All Employees</option>
                         </select>
                         <i class="ph ph-user absolute left-3 top-2.5 text-gray-400"></i>
-                        <i class="ph ph-caret-down absolute right-3 top-2.5 text-gray-400 pointer-events-none"></i>
                     </div>
                 </div>
                 
                 <div class="bg-gray-50 border-b border-gray-200 px-4 py-3 grid grid-cols-12 gap-2 text-xs font-bold text-gray-500 uppercase tracking-wider">
                     <div class="col-span-2">Employee</div>
-                    <div class="col-span-2 text-center bg-purple-50 text-purple-700 rounded py-1 border border-purple-100">Work Date</div>
-                    <div class="col-span-3 text-center bg-blue-50 text-blue-700 rounded py-1 border border-blue-100">Performance (In/Out/Idle)</div>
-                    <div class="col-span-2">Request Details</div>
+                    <div class="col-span-2 text-center bg-gray-100 text-gray-600 rounded py-1 border border-gray-200">Work Date</div>
+                    <div class="col-span-2 text-center bg-blue-50 text-blue-700 rounded py-1 border border-blue-100">Zoho Perf.</div>
+                    <div class="col-span-2 text-center bg-purple-50 text-purple-700 rounded py-1 border border-purple-100">TL Perf.</div>
+                    <div class="col-span-2">Details</div>
                     <div class="col-span-1 text-center">Status</div>
-                    <div class="col-span-2 text-right">Action</div>
+                    <div class="col-span-1 text-right">Action</div>
                 </div>
 
                 <div id="compList" class="flex-1 overflow-y-auto">
@@ -102,7 +99,6 @@
             <h3 class="text-lg font-bold text-gray-800 mb-2">Confirm <span id="modalActionType">Action</span></h3>
             <p class="text-sm text-gray-500 mb-2">Request by: <span id="modalEmpName" class="font-bold text-gray-800">Name</span></p>
             <p class="text-sm text-gray-500 mb-6">Qty: <span id="modalQty" class="font-bold text-blue-600">0</span></p>
-            
             <div class="flex gap-3 justify-center">
                 <button onclick="closeConfirmModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
                 <button id="btnConfirm" class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-md">Yes, Confirm</button>
@@ -111,7 +107,6 @@
     </div>
 
     <script>
-        // PASTE YOUR NEW DEPLOYED URL HERE
         const API_URL = "https://script.google.com/macros/s/AKfycbzLEoUcTpNNq-6FSs96HUVZsrqDBMVSVmgR1fcSvCD3OFHqxyz-X7aBVLveoC8_llPz/exec";
 
         let allRequests = [];
@@ -120,13 +115,9 @@
         let selectedAction = null;
         let selectedQty = 0;
 
-        function logout() {
-            localStorage.removeItem("currentUser");
-            window.location.href = "index.html";
-        }
+        function logout() { localStorage.removeItem("currentUser"); window.location.href = "index.html"; }
 
         async function loadCompRequests() {
-            // Display User
             const user = JSON.parse(localStorage.getItem("currentUser"));
             if(user) {
                 document.getElementById('sidebarUserName').innerText = user.name;
@@ -143,9 +134,7 @@
                     updateStats();
                     populateDropdown();
                     renderTable();
-                } else {
-                    document.getElementById('compList').innerHTML = `<div class="text-center p-10 text-red-500">Error loading data</div>`;
-                }
+                } else { document.getElementById('compList').innerHTML = `<div class="text-center p-10 text-red-500">Error loading data</div>`; }
             } catch (e) { console.error(e); }
         }
 
@@ -199,23 +188,28 @@
                     <div class="col-span-2"><p class="font-bold text-gray-800 text-xs">${req.empName}</p><p class="text-[10px] text-gray-500">${req.category} | ${req.empId}</p></div>
                     
                     <div class="col-span-2 text-center border-l border-gray-100">
-                        <p class="text-xs font-bold text-purple-700">${req.compDate}</p>
+                        <p class="text-xs font-bold text-gray-800">${req.compDate}</p>
                         <p class="text-[10px] text-gray-500">${req.day}</p>
                     </div>
 
-                    <div class="col-span-3 text-center text-xs border-l border-r border-gray-100 px-2">
-                        <div class="flex justify-between"><span class="text-gray-400">Time:</span> <span class="font-mono text-gray-700">${req.login} - ${req.logout}</span></div>
-                        <div class="flex justify-between mt-1"><span class="text-gray-400">Worked:</span> <span class="font-mono font-bold text-blue-600">${req.hrsWorked}h</span></div>
-                        <div class="flex justify-between mt-1 border-t pt-1"><span class="text-gray-400">Inc Idle:</span> <span class="font-mono font-bold text-purple-600">${req.totalIncIdle}</span></div>
+                    <div class="col-span-2 text-center text-xs border-l border-gray-100 px-1">
+                        <div class="flex justify-between"><span class="text-gray-400 text-[10px]">In/Out:</span> <span class="font-mono text-blue-800 text-[10px]">${req.zohoIn} - ${req.zohoOut}</span></div>
+                        <div class="flex justify-between mt-0.5"><span class="text-gray-400 text-[10px]">Hrs:</span> <span class="font-mono font-bold text-blue-600">${req.zohoHrs}</span></div>
                     </div>
 
-                    <div class="col-span-2 text-xs">
+                    <div class="col-span-2 text-center text-xs border-l border-gray-100 px-1 bg-purple-50/30 rounded">
+                        <div class="flex justify-between"><span class="text-gray-400 text-[10px]">In/Out:</span> <span class="font-mono text-purple-800 text-[10px]">${req.tlIn} - ${req.tlOut}</span></div>
+                        <div class="flex justify-between mt-0.5"><span class="text-gray-400 text-[10px]">Work:</span> <span class="font-mono font-bold text-purple-600">${req.tlWorked}</span></div>
+                        <div class="flex justify-between mt-0.5 border-t border-purple-100"><span class="text-gray-400 text-[10px]">Idle:</span> <span class="font-mono text-purple-600 text-[10px]">${req.tlIdle}</span></div>
+                    </div>
+
+                    <div class="col-span-2 text-xs border-l border-gray-100 pl-2">
                         <p class="font-bold text-gray-700">Qty: ${req.reqQty}</p>
                         <p class="text-gray-500 italic truncate" title="${req.purpose}">${req.purpose || 'No details'}</p>
                     </div>
 
                     <div class="col-span-1 text-center">${statusBadge}</div>
-                    <div class="col-span-2">${actionBtns}</div>`;
+                    <div class="col-span-1 text-right">${actionBtns}</div>`;
                 list.appendChild(item);
             });
         }
@@ -232,9 +226,7 @@
         document.getElementById('btnConfirm').onclick = async function() {
             const btn = document.getElementById('btnConfirm'); btn.innerHTML = `<i class="ph ph-spinner animate-spin"></i> Processing`; btn.disabled = true;
             try {
-                const response = await fetch(API_URL, { method: "POST", body: JSON.stringify({ 
-                    action: "handleCompOffAction", rowIndex: selectedRow, decision: selectedAction, reqQty: selectedQty 
-                })});
+                const response = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "handleCompOffAction", rowIndex: selectedRow, decision: selectedAction, reqQty: selectedQty })});
                 const result = await response.json();
                 if (result.status === "success") { closeConfirmModal(); loadCompRequests(); } 
                 else { alert("Error: " + result.message); }
@@ -245,6 +237,3 @@
     </script>
 </body>
 </html>
-
-
-
